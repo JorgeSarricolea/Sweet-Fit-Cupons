@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const { v4: uuidv4 } = require("uuid");
 
 // To get all users
 const getUsers = async (req, res) => {
@@ -36,11 +37,14 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Create a new user
+// Create a new user with a randomly generated couponCode
 const createUser = async (req, res) => {
-  const { firstName, lastName, email, password, rolId, cuponCode } = req.body;
+  const { firstName, lastName, email, password, rolId } = req.body;
 
   try {
+    // Generate a random couponCode using uuid
+    const cuponCode = uuidv4().slice(0, 6).toUpperCase(); // Take the first 6 characters of the generated UUID
+
     // Use Prisma to create a new user in the database
     const newUser = await prisma.users.create({
       data: {
@@ -48,12 +52,12 @@ const createUser = async (req, res) => {
         lastName,
         email,
         password,
-        rol: { connect: { id: rolId } }, // Connect the user to their role using the ID
+        rol: { connect: { id: rolId } },
         cuponCode,
       },
     });
 
-    // Returns the new user created
+    // Return the new created user
     console.log("\nNew user successfully created!\n", newUser);
     res.json(newUser);
   } catch (error) {
