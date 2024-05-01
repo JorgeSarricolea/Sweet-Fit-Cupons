@@ -7,6 +7,9 @@ const cors = require("cors");
 const app = express();
 const { clientUrl } = require("./config/config.js");
 
+// Middleware to parse request body as JSON
+app.use(express.json());
+
 // Routes
 const usersRoutes = require("./routes/users.route.js");
 
