@@ -37,13 +37,20 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Create a new user with a randomly generated couponCode
+// Create a new user with a randomly generated couponCode and default roleId as 'User'
 const createUser = async (req, res) => {
-  const { firstName, lastName, email, password, rolId } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     // Generate a random couponCode using uuid
     const cuponCode = uuidv4().slice(0, 6).toUpperCase(); // Take the first 6 characters of the generated UUID
+
+    // Find the roleId for 'User'
+    const userRole = await prisma.roles.findFirst({
+      where: {
+        name: "User",
+      },
+    });
 
     // Use Prisma to create a new user in the database
     const newUser = await prisma.users.create({
@@ -52,7 +59,7 @@ const createUser = async (req, res) => {
         lastName,
         email,
         password,
-        rol: { connect: { id: rolId } },
+        role: { connect: { id: userRole.id } }, // Connect the user to the 'User' role
         cuponCode,
       },
     });
