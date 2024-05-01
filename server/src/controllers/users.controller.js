@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 const getUsers = async (req, res) => {
   try {
     const users = await prisma.users.findMany();
+    console.log("\nList of users:\n", users);
     res.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -27,6 +28,7 @@ const getUserById = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    console.log("\nUser ID: ", user.id, "\n", user);
     res.json(user);
   } catch (error) {
     console.error("Error fetching user by ID:", error);
@@ -52,6 +54,7 @@ const createUser = async (req, res) => {
     });
 
     // Returns the new user created
+    console.log("\nNew user successfully created!\n", newUser);
     res.json(newUser);
   } catch (error) {
     console.error("Error creating user:", error);
@@ -77,6 +80,7 @@ const updateUser = async (req, res) => {
       },
     });
 
+    console.log("User with ID '" + updatedUser.id + "' successfully updated!");
     res.json(updatedUser);
   } catch (error) {
     console.error("Error updating user:", error);
@@ -93,6 +97,7 @@ const deleteUser = async (req, res) => {
       where: { id: userId },
     });
 
+    console.log("User successfully deleted!");
     res.status(204).send();
   } catch (error) {
     console.error("Error deleting user:", error);
