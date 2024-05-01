@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
 
 // To get all users
 const getUsers = async (req, res) => {
@@ -52,13 +53,16 @@ const createUser = async (req, res) => {
       },
     });
 
+    // Hash password using bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Use Prisma to create a new user in the database
     const newUser = await prisma.users.create({
       data: {
         firstName,
         lastName,
         email,
-        password,
+        password: hashedPassword,
         role: { connect: { id: userRole.id } }, // Connect the user to the 'User' role
         cuponCode,
       },
