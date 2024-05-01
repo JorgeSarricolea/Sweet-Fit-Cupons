@@ -9,9 +9,9 @@ To perform migrations automatically, you can take a look at the script located w
 [auto_migrate.sh](../scripts/auto_migrate.sh)
 
 
-Just run this script following the next command:
-´´´
-./scripts/auto_migrate.sh
-´´´
+> [!TIP]
+> Just run this script following the next command:
+> **./scripts/auto_migrate.sh**
+
 
 This allows the **'migrate'** command to be executed with the next command without the need to specify a name; by default, it is set to **'auto_migrate'**.
