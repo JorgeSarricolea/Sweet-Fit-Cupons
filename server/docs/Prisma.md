@@ -4,10 +4,7 @@ Prisma is a modern, type-safe ORM (Object-Relational Mapping) for Node.js and Ty
 
 ### Migrations
 
-To perform migrations automatically, you can take a look at the script located within the **scripts** folder:
-
-[auto_migrate.sh](../scripts/auto_migrate.sh)
-
+To perform migrations automatically, you can take a look at the script located within the **scripts** folder: [auto_migrate.sh](../scripts/auto_migrate.sh)
 
 > [!TIP]
 > Just run this script following the next command:
