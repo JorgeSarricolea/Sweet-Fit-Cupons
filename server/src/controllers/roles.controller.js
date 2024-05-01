@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// Obtener todos los roles
+// Get all roles
 const getRoles = async (req, res) => {
   try {
     const roles = await prisma.roles.findMany();
@@ -12,7 +12,7 @@ const getRoles = async (req, res) => {
   }
 };
 
-// Obtener un rol por su ID
+// Get a role by its ID
 const getRoleById = async (req, res) => {
   const roleId = req.params.id;
 
@@ -34,19 +34,19 @@ const getRoleById = async (req, res) => {
   }
 };
 
-// Crear un nuevo rol
+// Create a new role
 const createRole = async (req, res) => {
   const { name } = req.body;
 
   try {
-    // Usar Prisma para crear un nuevo rol en la base de datos
+    // Use Prisma to create a new role in the database
     const newRole = await prisma.roles.create({
       data: {
         name,
       },
     });
 
-    // Devolver el nuevo rol creado
+    // Return the newly created role
     res.json(newRole);
   } catch (error) {
     console.error("Error creating role:", error);

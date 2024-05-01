@@ -59,4 +59,45 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUserById, createUser };
+// Update an existing user
+const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const { firstName, lastName, email, password, rolId, cuponCode } = req.body;
+
+  try {
+    const updatedUser = await prisma.users.update({
+      where: { id: userId },
+      data: {
+        firstName,
+        lastName,
+        email,
+        password,
+        rol: { connect: { id: rolId } }, // Connect the user to their role using the ID
+        cuponCode,
+      },
+    });
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Error updating user" });
+  }
+};
+
+// Delete an existing user
+const deleteUser = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    await prisma.users.delete({
+      where: { id: userId },
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Error deleting user" });
+  }
+};
+
+module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
