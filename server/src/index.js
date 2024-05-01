@@ -7,12 +7,18 @@ const cors = require("cors");
 const app = express();
 const { clientUrl } = require("./config/config.js");
 
+// Routes
+const usersRoutes = require("./routes/users.route.js");
+
 // Enable CORS for all requests
 app.use(
   cors({
     origin: clientUrl,
   })
 );
+
+// Endpoints
+app.use("/api", usersRoutes);
 
 const PORT = process.env.PORT || 3000;
 
