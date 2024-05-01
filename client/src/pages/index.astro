@@ -1,7 +1,8 @@
 ---
-
+import Login from "../components/astro/login.astro"
+import SignUp from "./SignUp.astro"
 ---
-
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -10,7 +11,7 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="w-full h-min-screen h-dvh py-16 px-9 md:py-24 md:px-48 boder boder-2 bg-gray-500 flex justify-center items-center"> 
+		<Login/>
 	</body>
 </html>
