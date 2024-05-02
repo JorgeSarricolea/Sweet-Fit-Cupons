@@ -9,13 +9,13 @@ datasource db {
 
 model users {
   id String @id @default(uuid()) @db.VarChar(36)
-  rolId String @db.VarChar(36)
-  rol roles @relation(fields: [rolId], references: [id])
+  roleId String? @db.VarChar(36)
+  role roles? @relation(fields: [roleId], references: [id])
   firstName String @db.VarChar(150)
   lastName String @db.VarChar(150)
   email String @unique @db.VarChar(255)
   password String @db.VarChar(255)
-  cuponCode String @db.VarChar(6)
+  cuponCode String? @db.VarChar(6)
   registrationDate DateTime @default(now())
   userCupons users_cupons[]
 }
@@ -28,6 +28,7 @@ model roles {
 
 model cupons {
   id String @id @default(uuid()) @db.VarChar(36)
+  code String @db.VarChar(6)
   name String @db.VarChar(150)
   description String @db.VarChar(255)
   expirationDate DateTime
