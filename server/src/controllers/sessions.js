@@ -63,7 +63,7 @@ const login = async (req, res) => {
     }
 
     // Passwords match, return success
-    console.log("Login successful!")
+    console.log("Login successful!");
     res.json({ message: "Login successful" });
   } catch (error) {
     console.error("Error logging in:", error);
