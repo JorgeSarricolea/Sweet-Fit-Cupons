@@ -5,7 +5,7 @@ const router = express.Router();
 const sessionController = require("../controllers/sessions");
 
 // Routes
-router.post("/register/", sessionController.register);
-// router.get("/login:id", roleController.login);
+router.post("/register", sessionController.register);
+router.post("/login", sessionController.login);
 
 module.exports = router;

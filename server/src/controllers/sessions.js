@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { encrypt } = require("../handlers/handlerBycript");
+const { encrypt, compare } = require("../handlers/handlerBcrypt");
 
 // Register a new user with a default roleId as 'User'
 const register = async (req, res) => {
@@ -38,4 +38,37 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register };
+// Login user
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find user by email
+    const user = await prisma.users.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    // If user doesn't exist, return error
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Compare passwords
+    const passwordMatch = await compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    // Passwords match, return success
+    console.log("Login successful!")
+    res.json({ message: "Login successful" });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ error: "Error logging in" });
+  }
+};
+
+module.exports = { register, login };
