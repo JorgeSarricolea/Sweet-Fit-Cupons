@@ -14,6 +14,7 @@ app.use(express.json());
 const usersRoutes = require("./routes/users.route.js");
 const rolesRoutes = require("./routes/roles.route.js");
 const cuponsRoutes = require("./routes/cupons.route.js");
+const usersCuponsRoutes = require("./routes/usersCupons.route.js");
 
 // Enable CORS for all requests
 app.use(
@@ -26,6 +27,7 @@ app.use(
 app.use("/api", usersRoutes);
 app.use("/api", rolesRoutes);
 app.use("/api", cuponsRoutes);
+app.use("/api", usersCuponsRoutes);
 
 const PORT = process.env.PORT || 3000;
 

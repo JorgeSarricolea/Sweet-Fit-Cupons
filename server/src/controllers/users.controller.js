@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
 // To get all users
@@ -40,12 +40,9 @@ const getUserById = async (req, res) => {
 
 // Create a new user with a randomly generated couponCode and default roleId as 'User'
 const createUser = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, cuponCode } = req.body;
 
   try {
-    // Generate a random couponCode using uuid
-    const cuponCode = uuidv4().slice(0, 6).toUpperCase(); // Take the first 6 characters of the generated UUID
-
     // Find the roleId for 'User'
     const userRole = await prisma.roles.findFirst({
       where: {
