@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Controllers
-const usersCuponsController = require("../controllers/usersCupons.controller");
+const usersCuponsController = require("../controllers/usersCupons");
 
 // Routes
 router.get("/users-cupons", usersCuponsController.getAllUserCuponAssignments);

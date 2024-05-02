@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Controllers
-const cuponController = require("../controllers/cupons.controller");
+const cuponController = require("../controllers/cupons");
 
 // Routes
 router.get("/cupons", cuponController.getCupons);

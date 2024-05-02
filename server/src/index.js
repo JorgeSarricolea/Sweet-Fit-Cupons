@@ -11,10 +11,11 @@ const { clientUrl } = require("./config/config.js");
 app.use(express.json());
 
 // Routes
-const usersRoutes = require("./routes/users.route.js");
-const rolesRoutes = require("./routes/roles.route.js");
-const cuponsRoutes = require("./routes/cupons.route.js");
-const usersCuponsRoutes = require("./routes/usersCupons.route.js");
+const sessionsRoutes = require("./routes/sessions.js");
+const usersRoutes = require("./routes/users.js");
+const rolesRoutes = require("./routes/roles.js");
+const cuponsRoutes = require("./routes/cupons.js");
+const usersCuponsRoutes = require("./routes/usersCupons.js");
 
 // Enable CORS for all requests
 app.use(
@@ -24,6 +25,7 @@ app.use(
 );
 
 // Endpoints
+app.use("/api", sessionsRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", rolesRoutes);
 app.use("/api", cuponsRoutes);

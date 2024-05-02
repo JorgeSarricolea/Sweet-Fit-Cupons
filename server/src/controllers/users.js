@@ -1,7 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-// const { v4: uuidv4 } = require("uuid");
-const bcrypt = require("bcrypt");
 
 // To get all users
 const getUsers = async (req, res) => {
@@ -35,42 +33,6 @@ const getUserById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     res.status(500).json({ error: "Error fetching user by ID" });
-  }
-};
-
-// Create a new user with a randomly generated couponCode and default roleId as 'User'
-const createUser = async (req, res) => {
-  const { firstName, lastName, email, password, cuponCode } = req.body;
-
-  try {
-    // Find the roleId for 'User'
-    const userRole = await prisma.roles.findFirst({
-      where: {
-        name: "User",
-      },
-    });
-
-    // Hash password using bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Use Prisma to create a new user in the database
-    const newUser = await prisma.users.create({
-      data: {
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
-        role: { connect: { id: userRole.id } }, // Connect the user to the 'User' role
-        cuponCode,
-      },
-    });
-
-    // Return the new created user
-    console.log("\nNew user successfully created!\n", newUser);
-    res.json(newUser);
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ error: "Error creating user" });
   }
 };
 
@@ -117,4 +79,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = { getUsers, getUserById, updateUser, deleteUser };
