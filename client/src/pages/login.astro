@@ -1,6 +1,7 @@
 ---
 import Layout from "@/components/Layout.astro";
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
+import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
+import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
 ---
 
 <Layout title={["Login"]} description={["Inicio de sesión"]}>
@@ -18,29 +19,20 @@ import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
             <p class="font-bold text-6xl text-primary">Log in</p>
           </div>
           <form class="text-center space-y-4" id="login-form">
-            <div
-              class="border-primary border-2 rounded-md flex gap-1 space-x-2 h-1/4 items-center p-2"
-            >
-              <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="ejemplo@email.com"
-                class="flex-1 h-full focus:outline-none text-xl"
-              />
-            </div>
-            <div
-              class="border-primary border-2 rounded-md flex gap-1 space-x-2 h-1/4 items-center p-2"
-            >
-              <i class="fa-solid fa-lock"></i>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Contraseña"
-                class="flex-1 h-full focus:outline-none text-xl"
-              />
-            </div>
+            <PrimaryInput
+              id={["email"]}
+              type={["email"]}
+              name={["email"]}
+              placeholder={["ejemplo@email.com"]}
+              icon={["fa-solid fa-envelope"]}
+            />
+            <PrimaryInput
+              id={["password"]}
+              type={["password"]}
+              name={["password"]}
+              placeholder={["Contraseña"]}
+              icon={["fa-solid fa-lock"]}
+            />
             <div class="text-left text-primary">
               <a href="">Olvidé mi contraseña</a>
             </div>
