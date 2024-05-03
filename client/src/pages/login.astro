@@ -1,8 +1,10 @@
 ---
 import Layout from "@/components/Layout.astro";
-import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
+import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
 import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
+import PasswordInput from "@/components/inputs/PasswordInput.astro";
 import ResetPwd from "@/components/popups/ResetPwd.astro";
+
 ---
 
 <Layout title={["Login"]} description={["Inicio de sesión"]}>
@@ -27,7 +29,7 @@ import ResetPwd from "@/components/popups/ResetPwd.astro";
               placeholder={["ejemplo@email.com"]}
               icon={["fa-solid fa-envelope"]}
             />
-            <PrimaryInput
+            <PasswordInput
               id={["password"]}
               type={["password"]}
               name={["password"]}

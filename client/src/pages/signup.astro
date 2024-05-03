@@ -1,7 +1,8 @@
 ---
 import Layout from "@/components/Layout.astro";
-import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
+import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
 import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
+import PasswordInput from "@/components/inputs/PasswordInput.astro";
 ---
 
 <Layout title={["Signup"]} description={["Registro"]}>
@@ -38,7 +39,7 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
               placeholder={["ejemplo@email.com"]}
               icon={["fa-solid fa-envelope"]}
             />
-            <PrimaryInput
+            <PasswordInput
               id={["password"]}
               type={["password"]}
               name={["password"]}
