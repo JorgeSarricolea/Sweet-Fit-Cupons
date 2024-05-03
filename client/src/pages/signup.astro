@@ -4,7 +4,7 @@ import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
 import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
 ---
 
-<Layout title={["Nueva Contraseña"]} description={["Nueva Contraseña"]}>
+<Layout title={["Signup"]} description={["Registro"]}>
   <div class="flex h-screen justify-center items-center">
     <div
       class="flex w-5/6 m-auto bg-primary shadow-2xl justify-center items-center rounded-2xl"
@@ -16,28 +16,44 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
           class="p-10 md:mt-36 w-full h-full flex flex-col justify-around space-y-10"
         >
           <div class="flex align-center pb-10">
-            <p class="font-bold text-6xl text-primary">
-              Recuperar <br /> Contraseña
-            </p>
+            <p class="font-bold text-6xl text-primary">Sign up</p>
           </div>
           <form class="text-center space-y-4" id="signup-form">
             <PrimaryInput
-              id={["newPassword"]}
-              type={["password"]}
-              name={["newPassword"]}
-              placeholder={["Nueva Contraseña"]}
-              icon={["fa-solid fa-lock"]}
+              id={["firstName"]}
+              type={["text"]}
+              name={["firstName"]}
+              placeholder={["Nombre(s)"]}
             />
             <PrimaryInput
-              id={["confirmPassword"]}
+              id={["lastName"]}
+              type={["text"]}
+              name={["lastName"]}
+              placeholder={["Apellido(s)"]}
+            />
+            <PrimaryInput
+              id={["email"]}
+              type={["email"]}
+              name={["email"]}
+              placeholder={["ejemplo@email.com"]}
+              icon={["fa-solid fa-envelope"]}
+            />
+            <PrimaryInput
+              id={["password"]}
               type={["password"]}
-              name={["confirmPassword"]}
-              placeholder={["Confirmar contraseña"]}
+              name={["password"]}
+              placeholder={["Contraseña"]}
               icon={["fa-solid fa-lock"]}
             />
+
             <br />
-            <PrimaryBtn description={["Cambiar"]} />
+            <PrimaryBtn description={["Registrarse"]} />
           </form>
+          <p class="text-primary mt-4 w-fit">
+            ¿Ya tienes cuenta? <a href="/login" class="font-bold"
+              >Iniciar sesión</a
+            >
+          </p>
         </div>
       </div>
       <div
@@ -57,17 +73,23 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
       event.preventDefault(); // Stop form submission
 
       // Get the main data from form
-      const newPasswdlInput = document.getElementById(
-        "newPassword"
+      const firstNameInput = document.getElementById(
+        "firstName"
       ) as HTMLInputElement;
-      const confirmPasswdInput = document.getElementById(
-        "confirmPassword"
+      const lastNameInput = document.getElementById(
+        "lastName"
+      ) as HTMLInputElement;
+      const emailInput = document.getElementById("email") as HTMLInputElement;
+      const passwordInput = document.getElementById(
+        "password"
       ) as HTMLInputElement;
 
-      const newPassword = newPasswdlInput.value;
-      const confirmPassword = confirmPasswdInput.value;
+      const firstName = firstNameInput.value;
+      const lastName = lastNameInput.value;
+      const email = emailInput.value;
+      const password = passwordInput.value;
 
-      if (!newPassword || !confirmPassword) {
+      if (!firstName || !lastName || !email || !password) {
         alert("Por favor, complete todos los campos");
         return;
       }
@@ -75,18 +97,16 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
       // Send data to server
       try {
         const response = await fetch(`${API_URL}/api/register`, {
-          //ruta de cambiar contraseña
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ newPassword, confirmPassword }),
+          body: JSON.stringify({ firstName, lastName, email, password }),
         });
 
         if (response.ok) {
           // Redirect to the admin page
-          alert("contraseña cambiada con exito");
-          window.location.href = "/login";
+          window.location.href = "/admin";
         } else {
           const errorData = await response.json();
           throw new Error(errorData.error || "Error desconocido");
