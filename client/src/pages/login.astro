@@ -1,7 +1,8 @@
 ---
 import Layout from "@/components/Layout.astro";
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
+import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
 import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
+import ResetPwd from "@/components/popups/ResetPwd.astro";
 ---
 
 <Layout title={["Login"]} description={["Inicio de sesión"]}>
@@ -34,13 +35,19 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
               icon={["fa-solid fa-lock"]}
             />
             <div class="text-left text-primary">
-              <a href="">Olvidé mi contraseña</a>
+              <p
+                id="forgot-password"
+                class="text-left text-primary cursor-pointer"
+              >
+                Olvidé mi contraseña
+              </p>
             </div>
             <br />
             <PrimaryBtn description={["iniciar sesión"]} />
           </form>
-          <p class="text-primary mt-4">
-            ¿No tienes cuenta? <a href="/signup" class="font-bold">Regístrate</a>
+          <p class="text-primary mt-4 w-fit">
+            ¿No tienes cuenta? <a href="/signup" class="font-bold">Regístrate</a
+            >
           </p>
         </div>
       </div>
@@ -52,48 +59,71 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
   </div>
 </Layout>
 
+<ResetPwd />
+
 <script>
   import { API_URL } from "../js/config";
 
+  // Function to show password reset popup
+  function showResetPasswordPopup() {
+    const email = (
+      document.getElementById("email") as HTMLInputElement
+    ).value.trim();
+
+    if (email) {
+      const resetPasswordPopup = document.getElementById(
+        "reset-password-popup"
+      );
+      resetPasswordPopup.classList.remove("hidden");
+    }
+  }
+
+  // Add click event to "Forgot Password" link
   document
-    .getElementById("login-form")
-    .addEventListener("submit", async function (event) {
-      event.preventDefault(); // Stop form submission
+    .getElementById("forgot-password")
+    .addEventListener("click", showResetPasswordPopup);
 
-      // Get the main data from form
-      const emailInput = document.getElementById("email") as HTMLInputElement;
-      const passwordInput = document.getElementById(
-        "password"
-      ) as HTMLInputElement;
+  // Get the login form
+  const loginForm = document.getElementById("login-form");
 
-      const email = emailInput.value;
-      const password = passwordInput.value;
+  // Add submit event to login form
+  loginForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-      if (!email || !password) {
-        alert("Por favor, complete todos los campos");
-        return;
+    const email = (
+      document.getElementById("email") as HTMLInputElement
+    ).value.trim();
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+
+    if (!email || !password) {
+      alert("Por favor, complete todos los campos");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const token = responseData.token;
+        // Guardar el token JWT en el almacenamiento local del navegador
+        localStorage.setItem("token", token);
+        // Redirigir al usuario a la página de administrador
+        window.location.href = "/admin";
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error desconocido");
       }
-
-      // Send data to server
-      try {
-        const response = await fetch(`${API_URL}/api/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        if (response.ok) {
-          // Redirect to the admin page
-          window.location.href = "/admin";
-        } else {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Error desconocido");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Hubo un error al iniciar sesión");
-      }
-    });
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un error al iniciar sesión");
+    }
+  });
 </script>

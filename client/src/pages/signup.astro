@@ -1,6 +1,6 @@
 ---
 import Layout from "@/components/Layout.astro";
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
+import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
 import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
 ---
 
@@ -49,8 +49,10 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
             <br />
             <PrimaryBtn description={["Registrarse"]} />
           </form>
-          <p class="text-primary mt-4">
-            ¿Ya tienes cuenta? <a href="/login" class="font-bold">Iniciar sesión</a>
+          <p class="text-primary mt-4 w-fit">
+            ¿Ya tienes cuenta? <a href="/login" class="font-bold"
+              >Iniciar sesión</a
+            >
           </p>
         </div>
       </div>
@@ -71,8 +73,12 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
       event.preventDefault(); // Stop form submission
 
       // Get the main data from form
-      const firstNameInput = document.getElementById("firstName") as HTMLInputElement;
-      const lastNameInput = document.getElementById("lastName") as HTMLInputElement;
+      const firstNameInput = document.getElementById(
+        "firstName"
+      ) as HTMLInputElement;
+      const lastNameInput = document.getElementById(
+        "lastName"
+      ) as HTMLInputElement;
       const emailInput = document.getElementById("email") as HTMLInputElement;
       const passwordInput = document.getElementById(
         "password"
@@ -83,7 +89,7 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
       const email = emailInput.value;
       const password = passwordInput.value;
 
-      if (!firstName||!lastName||!email || !password) {
+      if (!firstName || !lastName || !email || !password) {
         alert("Por favor, complete todos los campos");
         return;
       }
@@ -96,7 +102,7 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ firstName, lastName, email, password }),
-        }); 
+        });
 
         if (response.ok) {
           // Redirect to the admin page
@@ -111,4 +117,3 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
       }
     });
 </script>
-
