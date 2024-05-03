@@ -19,7 +19,10 @@ const findUserRole = async (roleName) => {
   }
 
   // Find the role ID in the hash table
-  return rolesCache[roleName];
+  const roleId = rolesCache[roleName];
+
+  // Return the roleId
+  return roleId;
 };
 
 // Function to find a user by their email

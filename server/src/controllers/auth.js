@@ -1,9 +1,40 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
 
 // Handlers functions
 const { encrypt, compare } = require("../handlers/handlerBcrypt");
 const { findUserRole, findUserByEmail } = require("../handlers/handlerUsers");
+
+// Function to generate a JWT
+const generateToken = (userId) => {
+  const payload = {
+    userId: userId,
+  };
+
+  const expiresInOneDay = 24 * 60 * 60;
+  const algorithm = process.env.JWT_ALGORITHM || "HS256";
+  const secret = process.env.JWT_SECRET;
+
+  return jwt.sign(payload, secret, {
+    expiresIn: expiresInOneDay,
+    algorithm: algorithm,
+  });
+};
+
+// Function to verify a JWT token
+const verifyToken = async (req, res) => {
+  const token = req.body.token; // Get token from request body
+
+  try {
+    // Verify the token using the secret key
+    await jwt.verify(token, process.env.JWT_SECRET);
+    res.json({ isValid: true }); // Token es válido
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(500).json({ error: "Error verifying token" });
+  }
+};
 
 // Register a new user with a default roleId as 'User'
 const register = async (req, res) => {
@@ -85,13 +116,17 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
     }
 
+    // Passwords match, generate JWT token with user's role
+    const token = generateToken(user.id);
+
     // Passwords match, return success
-    console.log("Login successful!");
-    res.json({ message: "Login successful" });
+    res.json({ message: "Login successful", token: token });
+    console.log("Login successful for user:", email);
+    console.log("Token:", token);
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Error logging in" });
   }
 };
 
-module.exports = { register, login, registerWithEmailOnly };
+module.exports = { register, login, registerWithEmailOnly, verifyToken };
