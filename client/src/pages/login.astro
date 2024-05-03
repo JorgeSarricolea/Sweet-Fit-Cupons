@@ -1,6 +1,6 @@
 ---
 import Layout from "@/components/Layout.astro";
-import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
+import PrimaryBtn from "@/components/Buttons/PrimaryBtn.astro";
 import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
 import ResetPwd from "@/components/popups/ResetPwd.astro";
 ---
@@ -46,6 +46,7 @@ import ResetPwd from "@/components/popups/ResetPwd.astro";
             <PrimaryBtn description={["iniciar sesión"]} />
           </form>
           <p class="text-primary mt-4">
+            ¿No tienes cuenta? <a href="/signup" class="font-bold">Regístrate</a>
             ¿No tienes cuenta? <a href="/signup" class="font-bold">Regístrate</a
             >
           </p>
