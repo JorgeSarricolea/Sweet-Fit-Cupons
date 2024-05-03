@@ -1,0 +1,14 @@
+<button
+  id="logout-button"
+  class="flex cursor-pointer uppercase bg-primary text-white justify-center item-center font-bold py-4 px-8 w-full rounded-lg hover:bg-white hover:text-primary border-2 hover:border-primary transition duration-300"
+  >cerrar sesión</button
+>
+
+<script>
+  const logoutButton = document.getElementById("logout-button");
+
+  logoutButton.addEventListener("click", function () {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  });
+</script>

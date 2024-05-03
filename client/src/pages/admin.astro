@@ -1,50 +1,18 @@
-<h1>Admin page</h1>
-<button id="logout-button">Cerrar sesión</button>
+---
+import CloseSessionBtn from "@/components/buttons/CloseSessionBtn.astro";
+---
 
-<script>
-  import { API_URL } from "../js/config";
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Page</title>
+  </head>
+  <body>
+    <h1>Admin page</h1>
+    <CloseSessionBtn />
+  </body>
+</html>
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    window.location.href = "/login";
-  } else {
-    // Verifica si el token es válido
-    verifyToken(token).then((isValid) => {
-      if (!isValid) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-      }
-    });
-  }
-
-  const logoutButton = document.getElementById("logout-button");
-
-  logoutButton.addEventListener("click", function () {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  });
-
-  // Función para verificar un token JWT
-  async function verifyToken(token) {
-    try {
-      // Realiza una solicitud al backend para verificar el token
-      const response = await fetch(`${API_URL}/api/auth/verify-token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        return result.isValid; // Retorna true si el token es válido
-      } else {
-        return false; // Retorna false si hay algún error en la verificación
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      return false; // Retorna false si hay algún error en la verificación
-    }
-  }
-</script>
+<script src="../js/verifyToken.js"></script>
