@@ -1,6 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+
+// Handlers functions
 const { encrypt, compare } = require("../handlers/handlerBcrypt");
+const { findUserRole, findUserByEmail } = require("../handlers/handlerUsers");
 
 // Register a new user with a default roleId as 'User'
 const register = async (req, res) => {
@@ -8,13 +11,9 @@ const register = async (req, res) => {
 
   try {
     // Find the roleId for 'User'
-    const userRole = await prisma.roles.findFirst({
-      where: {
-        name: "User",
-      },
-    });
+    const userRoleId = await findUserRole("User");
 
-    // Hash the password using encrypt function
+    // Hash the password
     const hashedPassword = await encrypt(password);
 
     // Use Prisma to create a new user in the database
@@ -24,7 +23,7 @@ const register = async (req, res) => {
         lastName,
         email,
         password: hashedPassword,
-        role: { connect: { id: userRole.id } }, // Connect the user to the 'User' role
+        role: { connect: { id: userRoleId } },
         cuponCode,
       },
     });
@@ -38,17 +37,41 @@ const register = async (req, res) => {
   }
 };
 
+// Register a new user with email only
+const registerWithEmailOnly = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Find the roleId for 'User'
+    const userRoleId = await findUserRole("User");
+
+    // Use Prisma to create a new user in the database with only email
+    const newUser = await prisma.users.create({
+      data: {
+        email,
+        firstName: "Undefined",
+        lastName: "Undefined",
+        password: "Undefined",
+        role: { connect: { id: userRoleId } },
+      },
+    });
+
+    // Return the new created user
+    console.log("\nNew user with email only successfully created!\n", newUser);
+    res.json(newUser);
+  } catch (error) {
+    console.error("Error creating user with email only:", error);
+    res.status(500).json({ error: "Error creating user with email only" });
+  }
+};
+
 // Login user
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     // Find user by email
-    const user = await prisma.users.findUnique({
-      where: {
-        email: email,
-      },
-    });
+    const user = await findUserByEmail(email);
 
     // If user doesn't exist, return error
     if (!user) {
@@ -71,4 +94,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+module.exports = { register, login, registerWithEmailOnly };

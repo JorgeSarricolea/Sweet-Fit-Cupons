@@ -11,7 +11,7 @@ const { clientUrl } = require("./config/config.js");
 app.use(express.json());
 
 // Routes
-const sessionsRoutes = require("./routes/sessions.js");
+const authRoutes = require("./routes/auth.js");
 const usersRoutes = require("./routes/users.js");
 const rolesRoutes = require("./routes/roles.js");
 const cuponsRoutes = require("./routes/cupons.js");
@@ -25,7 +25,7 @@ app.use(
 );
 
 // Endpoints
-app.use("/api", sessionsRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", rolesRoutes);
 app.use("/api", cuponsRoutes);
