@@ -40,7 +40,7 @@ if (!token) {
       console.log("User's roleId:", roleId);
       console.log("User's roleName:", roleName);
 
-      // Perform validation with the user's roleName
+      // Perform validation with the user' roleName
       if (roleName != "Admin") {
         // Redirect user to unauthorized page
         window.location.href = "/unauthorized";
