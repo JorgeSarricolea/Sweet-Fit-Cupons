@@ -4,12 +4,14 @@ const jwt = require("jsonwebtoken");
 
 // Handlers functions
 const { encrypt, compare } = require("../handlers/handlerBcrypt");
-const { findUserRole, findUserByEmail } = require("../handlers/handlerUsers");
+const { findUserById, findUserByEmail } = require("../handlers/handlerUsers");
+const { getRoleName, findUserRole } = require("../handlers/handlerRoles");
 
 // Function to generate a JWT
-const generateToken = (userId) => {
+const generateToken = (userId, userRoleId) => {
   const payload = {
     userId: userId,
+    roleId: userRoleId,
   };
 
   const expiresInOneDay = 24 * 60 * 60;
@@ -22,17 +24,32 @@ const generateToken = (userId) => {
   });
 };
 
-// Function to verify a JWT token
+// Function to verify a JWT
 const verifyToken = async (req, res) => {
   const token = req.body.token; // Get token from request body
 
   try {
-    // Verify the token using the secret key
-    await jwt.verify(token, process.env.JWT_SECRET);
-    res.json({ isValid: true }); // Token es válido
+    // Verify token using secret key
+    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+
+    // Extract userId and roleId from decoded token
+    const { userId, roleId } = decodedToken;
+
+    // Check if the user exists
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // Get the user's role name
+    const roleName = await getRoleName(roleId);
+
+    // Valid token, return validity, roleId and roleName
+    res.json({ isValid: true, roleId: roleId, roleName: roleName });
+    console.log(roleId, roleName);
   } catch (error) {
-    console.error("Error verifying token:", error);
-    res.status(500).json({ error: "Error verifying token" });
+    console.error("Error verificando el token:", error);
+    res.status(500).json({ error: "Error verificando el token" });
   }
 };
 
@@ -116,8 +133,11 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
     }
 
+    // Get roleId for the user
+    const userRoleId = user.roleId;
+
     // Passwords match, generate JWT token with user's role
-    const token = generateToken(user.id);
+    const token = generateToken(user.id, userRoleId); // Pass userId and roleId to generateToken
 
     // Passwords match, return success
     res.json({ message: "Login successful", token: token });

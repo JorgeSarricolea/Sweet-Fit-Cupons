@@ -49,7 +49,7 @@ const updateUser = async (req, res) => {
         lastName,
         email,
         password,
-        rol: { connect: { id: rolId } }, // Connect the user to their role using the ID
+        role: { connect: { id: rolId } }, // Connect the user to their role using the ID
         cuponCode,
       },
     });
