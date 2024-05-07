@@ -39,7 +39,7 @@ const getUserById = async (req, res) => {
 // Update an existing user
 const updateUser = async (req, res) => {
   const userId = req.params.id;
-  const { firstName, lastName, email, password, rolId, cuponCode } = req.body;
+  const { firstName, lastName, email, password, roleId, cuponCode } = req.body;
 
   try {
     const updatedUser = await prisma.users.update({
@@ -49,7 +49,7 @@ const updateUser = async (req, res) => {
         lastName,
         email,
         password,
-        role: { connect: { id: rolId } }, // Connect the user to their role using the ID
+        roleId,
         cuponCode,
       },
     });

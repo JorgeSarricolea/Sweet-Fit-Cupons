@@ -40,9 +40,10 @@ if (!token) {
       console.log("User's roleId:", roleId);
       console.log("User's roleName:", roleName);
 
-      // Perform validation with the user's roleId and roleName
-      if (roleId === "userRoleId" && roleName != "Admin") {
-        // window.location.href = "/unauthorized";
+      // Perform validation with the user's roleName
+      if (roleName != "Admin") {
+        // Redirect user to unauthorized page
+        window.location.href = "/unauthorized";
       }
     }
   });
