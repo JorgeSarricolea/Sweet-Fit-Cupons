@@ -1,0 +1,29 @@
+---
+import UsersCuponsRow from "@/components/tables/UsersCuponsRow.astro";
+const { tableData } = Astro.props;
+---
+
+<table class="w-full justify-beetwen">
+  <thead class="text-center">
+    <tr>
+      <th>Email</th>
+      <th>Cupón</th>
+      <th>Fecha de vencimiento</th>
+      <th>Fecha de aplicación</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      tableData.map((data) => (
+        <UsersCuponsRow
+          email={data.email}
+          cuponCode={data.code}
+          expirationDate={data.expirationDate}
+          aplicatedDate={data.aplicatedDate}
+          Actions={data.Actions}
+        />
+      ))
+    }
+  </tbody>
+</table>
