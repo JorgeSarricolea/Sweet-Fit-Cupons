@@ -16,7 +16,7 @@ model users {
   email String @unique @db.VarChar(255)
   password String @db.VarChar(255)
   cuponCode String? @db.VarChar(6)
-  registrationDate DateTime @default(now())
+  registrationDate DateTime @default(now()) 
   userCupons users_cupons[]
 }
 

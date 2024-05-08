@@ -1,0 +1,95 @@
+---
+import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
+import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
+---
+
+<div
+  id="validar-cupon-popup"
+  class="fixed top-0 left-0 w-full h-full hidden flex justify-center items-center bg-black bg-opacity-50"
+>
+  <div
+    class="flex-col bg-white text-primary text-center gap-4 rounded-2xl py-12 px-20 relative"
+  >
+    <!-- Close icon -->
+    <button
+      id="close-popup-button"
+      class="absolute top-6 right-6 text-primary hover:text-red-500"
+    >
+      <i class="fa-solid fa-x"></i>
+    </button>
+
+    <h1 class="text-3xl font-bold mb-2">Validación de cupon</h1>
+    <p>
+      Ingresa el codigo del cupón para validarlo, usuario:  <br />
+      <span class="font-bold" id="resetEmail"></span>
+    </p>
+
+    <div class="flex flex-col gap-4 my-6">
+      <PrimaryInput
+        id={["verificationCodeCupon"]}
+        type={["text"]}
+        name={["verificationCodeCupon"]}
+      />
+
+      <PrimaryBtn description={["validar"]} />
+    </div>
+
+    <p>
+      ¿El correo del usuario es erroneo?
+      <a class="font-bold cursor-pointer" href="">Editar</a>
+    </p>
+  </div>
+</div>
+<script>
+    // Function to close the popup
+    function closePopup() {
+      const resetPasswordPopup = document.getElementById("validar-cupon-popup");
+      resetPasswordPopup.classList.add("hidden");
+      verificateCupon(); // Update the email when closing the popup
+    }
+  
+    // Function to update the email displayed in the popup
+    function verificateCupon() {
+      const resetEmailElement = document.getElementById("resetEmail");
+      if (resetEmailElement) {
+        resetEmailElement.innerText = localStorage.getItem("resetEmail") || "";
+      }
+    }
+  
+    // Function to show the popup
+    function showPopup() {
+      const emailInput = document.getElementById("email") as HTMLInputElement;
+      if (emailInput && emailInput.value.trim()) {
+        // Verifica si el campo de correo electrónico no está vacío
+        const resetPasswordPopup = document.getElementById(
+          "reset-password-popup"
+        );
+        resetPasswordPopup.classList.remove("hidden");
+        localStorage.setItem("resetEmail", emailInput.value.trim());
+        verificateCupon(); // Update the email when opening the popup
+      } else {
+        alert(
+          "Por favor, ingresa tu correo electrónico antes de solicitar restablecer tu contraseña."
+        );
+      }
+    }
+  
+    // Attach click event to popup close button
+    document
+      .getElementById("close-popup-button")
+      .addEventListener("click", function () {
+        closePopup();
+      });
+  
+    // Attach click event to open the popup
+    document
+      .getElementById("forgot-password")
+      .addEventListener("click", function () {
+        showPopup();
+      });
+  
+    // Add event listener to update the email when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+      verificateCupon();
+    });
+  </script>
