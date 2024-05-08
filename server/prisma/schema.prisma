@@ -39,11 +39,11 @@ model cupons {
 model users_cupons {
   userId String @db.VarChar(36)
   user users @relation(fields: [userId], references: [id])
-  cuponId String @db.VarChar(36)
-  cupon cupons @relation(fields: [cuponId], references: [id])
-  isAvailable Boolean @default(true)
+  cuponId String? @db.VarChar(36)
+  cupon cupons? @relation(fields: [cuponId], references: [id])
+  isAvailable Boolean @default(false)
   userCuponCode String? @db.VarChar(6)
-  sentCuponDate DateTime @default(now())
+  sentCuponDate DateTime?
 
-  @@id([userId, cuponId])
+  @@id([userId])
 }

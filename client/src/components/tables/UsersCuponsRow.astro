@@ -1,0 +1,30 @@
+---
+import PrimaryBtn from "@/components/buttons/PrimaryBtn.astro";
+const { email, cuponCode, expirationDate, aplicatedDate } = Astro.props;
+const expirationDateFormatted = new Date(expirationDate).toLocaleDateString(
+  "es-ES"
+);
+---
+
+<tr class="text-center">
+  <td>{email || "N/A"}</td>
+  <td>{cuponCode || "N/A"}</td>
+  <td>{expirationDate ? expirationDateFormatted : "N/A"}</td>
+  <td>{aplicatedDate || "N/A"}</td>
+  <td class="">
+    {
+      aplicatedDate ? (
+        "Cupón validado"
+      ) : cuponCode ? (
+        <PrimaryBtn description={["Validar cupón"]} py={["py-2"]} />
+      ) : (
+        <PrimaryBtn description={["Enviar cupón"]} py={["py-2"]} />
+      )
+    }
+  </td>
+  <td>
+    <i
+      class="fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
+    ></i>
+  </td>
+</tr>

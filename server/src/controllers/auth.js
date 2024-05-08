@@ -96,17 +96,27 @@ const registerWithEmailOnly = async (req, res) => {
     // Use Prisma to create a new user in the database with only email
     const newUser = await prisma.users.create({
       data: {
-        email,
+        role: { connect: { id: userRoleId } },
         firstName: "Undefined",
         lastName: "Undefined",
+        email,
         password: "Undefined",
-        role: { connect: { id: userRoleId } },
+        cuponCode: null,
+      },
+    });
+
+    // Use Prisma to create a new users_cupons in the database
+    const newUserWithoutCode = await prisma.users_cupons.create({
+      data: {
+        userId: newUser.id,
+        cuponId: null,
+        userCuponCode: null,
       },
     });
 
     // Return the new created user
     console.log("\nNew user with email only successfully created!\n", newUser);
-    res.json(newUser);
+    res.json({ newUser, newUserWithoutCode });
   } catch (error) {
     console.error("Error creating user with email only:", error);
     res.status(500).json({ error: "Error creating user with email only" });
