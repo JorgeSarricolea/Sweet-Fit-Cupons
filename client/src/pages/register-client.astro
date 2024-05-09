@@ -4,85 +4,85 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
 ---
 
 <Layout title={["Registrate"]} description={["Registro Cliente"]}>
-    <div class="flex h-screen justify-center items-center">
+  <div class="flex h-screen justify-center items-center">
+    <div
+      class="flex w-5/6 m-auto bg-primary shadow-2xl justify-center items-center rounded-2xl"
+    >
+      <div
+        class="w-full basis-2/3 p-0 md:h-full md:basis-1/2 justify-self-left bg-white rounded-b-lg md:rounded-none md:rounded-l-lg"
+      >
         <div
-            class="flex w-5/6 m-auto bg-primary shadow-2xl justify-center items-center rounded-2xl"
+          class="p-10 md:mt-36 w-full h-full flex flex-col justify-around space-y-10"
         >
-            <div
-                class="w-full basis-2/3 p-0 md:h-full md:basis-1/2 justify-self-left bg-white rounded-b-lg md:rounded-none md:rounded-l-lg"
-            >
-                <div
-                    class="p-10 md:mt-36 w-full h-full flex flex-col justify-around space-y-10"
-                >
-                    <div class="flex align-center pb-10 flex-col border">
-                        <p class="font-bold text-6xl text-primary">
-                            Recibe un cupón
-                        </p>
-                        <br />
-                        <p>Sigue los pasos para recibir un cupón:</p>
-                        <ol>
-                            <li>1. Ingresa tu correo.</li>
-                            <li>
-                                2. Al dar click en “Enviar” te redirigirá a
-                                Google Maps para dejar una reseña.
-                            </li>
-                            <li>3. Deja tu reseña.</li>
-                            <li>
-                                4. Acércate con el cajero y enseña tu reseña
-                                para recibir el cupón.
-                            </li>
-                        </ol>
-                    </div>
-                    <form class="text-center space-y-4" id="client-form">
-                        <PrimaryInput
-                            id={["email"]}
-                            type={["email"]}
-                            name={["email"]}
-                            placeholder={["ejemplo@email.com"]}
-                            icon={["fa-solid fa-envelope"]}
-                        />
-                        <input type="submit" value="Enviar" class="bg-primary w-full h-10 text-white rounded-md"/>
-                    </form>
-                </div>
-            </div>
-            <div
-                class="w-full basis-1/3 md:h-full md:basis-1/2 bg-primary rounded-t-lg md:rounded-none md:rounded-r-lg"
-            >
-            </div>
+          <div class="flex align-center pb-10 flex-col border">
+            <p class="font-bold text-6xl text-primary">Recibe un cupón</p>
+            <br />
+            <p>Sigue los pasos para recibir un cupón:</p>
+            <ol>
+              <li>1. Ingresa tu correo.</li>
+              <li>
+                2. Al dar click en “Enviar” te redirigirá a Google Maps para
+                dejar una reseña.
+              </li>
+              <li>3. Deja tu reseña.</li>
+              <li>
+                4. Acércate con el cajero y enseña tu reseña para recibir el
+                cupón.
+              </li>
+            </ol>
+          </div>
+          <form class="text-center space-y-4" id="client-form">
+            <PrimaryInput
+              id={["email"]}
+              type={["email"]}
+              name={["email"]}
+              placeholder={["ejemplo@email.com"]}
+              icon={["fa-solid fa-envelope"]}
+            />
+            <input
+              type="submit"
+              value="Enviar"
+              class="bg-primary w-full h-10 text-white rounded-md"
+            />
+          </form>
         </div>
+      </div>
+      <div
+        class="w-full basis-1/3 md:h-full md:basis-1/2 bg-primary rounded-t-lg md:rounded-none md:rounded-r-lg"
+      >
+      </div>
     </div>
+  </div>
 </Layout>
 
 <script>
-    import { API_URL } from "../js/config";
-    
-    const clientForm = document.getElementById("client-form")
-    clientForm.addEventListener("submit", async function (event){
-        event.preventDefault();
-        const email = (document.getElementById("email") as HTMLInputElement).value.trim();
-        
-        try{
-            const response = await fetch(`${API_URL}/auth/register-email-only`, {
-                method: "POST",
-                headers:{
-                    "Content_type":"application.json()",
-                },
-                body: JSON.stringify({email})
+  import { API_URL } from "../js/config";
 
-            });
-            if(response.ok){
-                const responseData = await response.json();
-                window.location.href="https://sweetandfit.mx/sucursales/"
-            }
-            else{
-                const errorData = await response.json();
-                throw new Error(errorData.error||"Error desconocido");
-            }
-        }
-        catch(error){
-            console.error("Error:", error);
-            alert("Hubo un problema al procesar su correo")
-        }
+  const clientForm = document.getElementById("client-form");
+  clientForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const email = (
+      document.getElementById("email") as HTMLInputElement
+    ).value.trim();
+
+    try {
+      const response = await fetch(`${API_URL}/api/auth/register-email-only`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        window.location.href = "https://sweetandfit.mx/sucursales/";
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error desconocido");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un problema al procesar su correo");
     }
-);
-    </script>
+  });
+</script>

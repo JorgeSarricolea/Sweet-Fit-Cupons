@@ -69,7 +69,7 @@ import PasswordInput from "@/components/inputs/PasswordInput.astro";
   import { API_URL } from "../js/config";
 
   document
-    .getElementById("singup-form")
+    .getElementById("signup-form")
     .addEventListener("submit", async function (event) {
       event.preventDefault(); // Stop form submission
 
@@ -97,7 +97,7 @@ import PasswordInput from "@/components/inputs/PasswordInput.astro";
 
       // Send data to server
       try {
-        const response = await fetch(`${API_URL}/api/register`, {
+        const response = await fetch(`${API_URL}/api/auth/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
