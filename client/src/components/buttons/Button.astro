@@ -1,0 +1,24 @@
+---
+import { buttonClasses } from "../../js/objects/buttonClasses";
+const { description, importance, action } = Astro.props;
+const importanceConfig = buttonClasses[importance] || buttonClasses.primary;
+---
+
+<button
+  id="main-btn"
+  class={`flex cursor-pointer uppercase ${importanceConfig.bg} ${importanceConfig.text} justify-center item-center font-bold ${importanceConfig.py} ${importanceConfig.px} ${importanceConfig.border} w-full rounded-lg hover:bg-secondary hover:text-white border-2 hover:border-secondary transition duration-300`}
+  data-action={action}>{description}</button
+>
+
+<script>
+  import { actions } from "../../js/objects/buttonActions";
+
+  document.getElementById("main-btn").addEventListener("click", (event) => {
+    const button = event.target as HTMLButtonElement;
+    const action = button.dataset.action;
+
+    if (action && actions[action]) {
+      actions[action]();
+    }
+  });
+</script>
