@@ -1,4 +1,5 @@
 import { API_URL } from "../config";
+import { getCupons } from "../handlers/handlerCupons";
 
 // Fetch all relation between users and cupons
 export async function getUsersCupons() {
@@ -15,14 +16,22 @@ export async function getUsersCupons() {
 }
 
 // Send coupon to user
-export const sendCoupon = async (userCuponId, userCuponCode) => {
+export const sendCoupon = async (userCuponId) => {
   try {
+    const coupons = await getCupons();
+
+    if (coupons.length === 0) {
+      throw new Error("No hay cupones disponibles");
+    }
+
+    const userCuponCode = coupons[0].code;
+
     const response = await fetch(`${API_URL}/api/users-cupons/${userCuponId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userCuponCode: "" }),
+      body: JSON.stringify({ userCuponCode }),
     });
 
     if (!response.ok) {
