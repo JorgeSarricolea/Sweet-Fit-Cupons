@@ -90,10 +90,23 @@ const registerWithEmailOnly = async (req, res) => {
   const { email } = req.body;
 
   try {
-    // Find the roleId for 'User'
+    // Verificar si el correo electrónico ya está en uso
+    const existingUser = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (existingUser) {
+      // Si el correo electrónico ya está registrado, responder con un error
+      return res
+        .status(400)
+        .json({ error: "El correo electrónico ya está en uso" });
+    }
+
+    // Si el correo electrónico no está en uso, proceder con la creación del usuario
     const userRoleId = await findUserRole("User");
 
-    // Use Prisma to create a new user in the database with only email
     const newUser = await prisma.users.create({
       data: {
         role: { connect: { id: userRoleId } },
@@ -101,24 +114,22 @@ const registerWithEmailOnly = async (req, res) => {
         lastName: "Undefined",
         email,
         password: "Undefined",
-        cuponCode: null,
       },
     });
 
-    // Use Prisma to create a new users_cupons in the database
     const newUserWithoutCode = await prisma.users_cupons.create({
       data: {
         email: newUser.email,
-        userCuponCode: null,
       },
     });
 
-    // Return the new created user
     console.log("\nNew user with email only successfully created!\n", newUser);
-    res.json({ newUser, newUserWithoutCode });
+    return res.json({ newUser, newUserWithoutCode });
   } catch (error) {
     console.error("Error creating user with email only:", error);
-    res.status(500).json({ error: "Error creating user with email only" });
+    return res
+      .status(500)
+      .json({ error: "Error creating user with email only" });
   }
 };
 

@@ -10,7 +10,10 @@ router.get(
   "/users-cupons/:userCuponId",
   usersCuponsController.getUserCuponById
 );
-router.post("/users-cupons", usersCuponsController.assignCuponToUser);
+router.put(
+  "/users-cupons/:userCuponId",
+  usersCuponsController.assignCuponToUser
+);
 router.put("/users-cupons/:userCuponId", usersCuponsController.updateUserCupon);
 router.delete(
   "/users-cupons/:userCuponId",

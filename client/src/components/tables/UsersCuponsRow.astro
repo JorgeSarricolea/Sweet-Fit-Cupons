@@ -20,15 +20,20 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
       applicationDate ? (
         "Cupón validado"
       ) : cuponCode ? (
-        <Button description={["Validar cupón"]} importance={["secondary"]} />
+        <Button description="Validar cupón" importance="secondary" />
       ) : (
-        <Button description={["Enviar cupón"]} importance={["primary"]} />
+        <Button
+          className={"send-coupon-btn"}
+          params={userCuponId}
+          description="Enviar cupón"
+          importance="primary"
+        />
       )
     }
   </td>
   <td>
     <i
-      class="deleteIcon fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
+      class="delete-user-coupon-btn fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
       data-userCuponId={userCuponId}
     >
     </i>
@@ -36,10 +41,14 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 </tr>
 
 <script>
-  import { deleteUsersCupon } from "@/js/handlers/handlerUsersCupons.js";
+  import {
+    deleteUsersCupon,
+    sendCoupon,
+  } from "@/js/handlers/handlerUsersCupons.js";
 
   document.addEventListener("DOMContentLoaded", function () {
-    const deleteIcons = document.querySelectorAll(".deleteIcon");
+    const deleteIcons = document.querySelectorAll(".delete-user-coupon-btn");
+    const sendButtons = document.querySelectorAll(".send-coupon-btn");
 
     deleteIcons.forEach((deleteIcon) => {
       deleteIcon.addEventListener("click", async function () {
@@ -53,6 +62,23 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
           }
         } else {
           console.log("Failed to delete: userCuponId is undefined");
+        }
+      });
+    });
+
+    sendButtons.forEach((sendButton) => {
+      sendButton.addEventListener("click", async function () {
+        const userCuponId = sendButton.getAttribute("data-params");
+
+        if (userCuponId) {
+          try {
+            await sendCoupon(userCuponId);
+            location.reload();
+          } catch (error) {
+            console.log("Failed to send coupon:", error);
+          }
+        } else {
+          console.log("Failed to send: userCuponId is undefined");
         }
       });
     });

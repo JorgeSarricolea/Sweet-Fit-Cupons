@@ -39,67 +39,61 @@ const getUserCuponById = async (req, res) => {
   }
 };
 
-// Assign a coupon to a user
 const assignCuponToUser = async (req, res) => {
-  const { userEmail, cuponCode } = req.body;
+  const { userCuponId } = req.params;
+  const { userCuponCode } = req.body;
 
   try {
-    // Check if the user exists
-    const user = await prisma.users.findUnique({
+    // Buscar la asociación usuario-cupón
+    const userCupon = await prisma.users_cupons.findUnique({
       where: {
-        email: userEmail,
+        id: userCuponId,
       },
     });
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    if (!userCupon) {
+      return res
+        .status(404)
+        .json({ error: "Asociación usuario-cupón no encontrada" });
     }
 
-    // Find all the user's cupons
-    const userCupons = await prisma.users_cupons.findMany({
+    // Verificar si el código del cupón proporcionado está presente en la tabla de cupones
+    const existingCupon = await prisma.cupons.findUnique({
       where: {
-        email: userEmail,
+        code: userCuponCode,
       },
     });
 
-    // Check if any of the user's cupons already have the same cuponCode
-    const isDuplicateCupon = userCupons.some(
-      (cupon) => cupon.userCuponCode === cuponCode
-    );
-
-    if (isDuplicateCupon) {
+    if (!existingCupon) {
       return res
         .status(400)
-        .json({ error: "User already has the same coupon assigned" });
+        .json({ error: "El código del cupón proporcionado no es válido" });
     }
 
-    // Find the cupon by its code
-    const cupon = await prisma.cupons.findUnique({
+    // Verificar si la fecha de vencimiento del cupón es posterior a la fecha actual
+    const currentDate = new Date();
+    if (existingCupon.expirationDate < currentDate) {
+      return res
+        .status(400)
+        .json({ error: "El cupón ha expirado y ya no es válido" });
+    }
+
+    // Actualizar el cupón
+    const updatedUserCupon = await prisma.users_cupons.update({
       where: {
-        code: cuponCode,
+        id: userCuponId,
       },
-    });
-
-    if (!cupon) {
-      return res.status(404).json({ error: "Cupon not found" });
-    }
-
-    // Associate the coupon to the user
-    const userCupon = await prisma.users_cupons.create({
       data: {
-        email: userEmail,
-        userCuponCode: cuponCode,
-        cuponExpirationDate: cupon.expirationDate,
+        userCuponCode,
+        cuponExpirationDate: existingCupon.expirationDate,
       },
     });
 
-    console.log(
-      `\nUser with email '${userEmail}' assigned cupon with code '${cuponCode}' successfully!`
-    );
-    res.json(userCupon);
+    console.log("Cupón asignado al usuario exitosamente!");
+    res.json(updatedUserCupon);
   } catch (error) {
-    console.error("Error assigning cupon to user:", error);
-    res.status(500).json({ error: "Error assigning cupon to user" });
+    console.error("Error al actualizar el cupón del usuario:", error);
+    res.status(500).json({ error: "Error al actualizar el cupón del usuario" });
   }
 };
 

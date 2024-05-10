@@ -14,6 +14,28 @@ export async function getUsersCupons() {
   }
 }
 
+// Send coupon to user
+export const sendCoupon = async (userCuponId, userCuponCode) => {
+  try {
+    const response = await fetch(`${API_URL}/api/users-cupons/${userCuponId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userCuponCode: "" }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to assign coupon to user");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Delete a user-coupon by its ID
 export const deleteUsersCupon = async (userCuponId) => {
   try {

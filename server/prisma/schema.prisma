@@ -15,7 +15,6 @@ model users {
   lastName String @db.VarChar(150)
   email String @unique @db.VarChar(255)
   password String @db.VarChar(255)
-  cuponCode String? @db.VarChar(6)
   registrationDate DateTime @default(now())
   userCupons users_cupons[]
 }
@@ -33,7 +32,6 @@ model cupons {
   description String @db.VarChar(255)
   expirationDate DateTime
   isValid Boolean @default(true)
-  userCupons users_cupons[]
 }
 
 model users_cupons {
@@ -41,7 +39,6 @@ model users_cupons {
   email String @db.VarChar(255)
   user users @relation(fields: [email], references: [email])
   userCuponCode String? @db.VarChar(6)
-  cupon cupons? @relation(fields: [userCuponCode], references: [code])
   cuponExpirationDate DateTime?
   applicationDate DateTime?
 }
