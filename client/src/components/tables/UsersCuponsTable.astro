@@ -18,10 +18,10 @@ const { tableData } = Astro.props;
       tableData.map((data) => (
         <UsersCuponsRow
           email={data.email}
-          cuponCode={data.code}
-          expirationDate={data.expirationDate}
-          aplicatedDate={data.aplicatedDate}
-          Actions={data.Actions}
+          cuponCode={data.userCuponCode}
+          expirationDate={data.cuponExpirationDate}
+          applicationDate={data.applicationDate}
+          userCuponId={data.id}
         />
       ))
     }

@@ -42,6 +42,7 @@ const createCupon = async (req, res) => {
   const { name, description, expirationDate, isValid } = req.body;
 
   try {
+    const parsedExpirationDate = new Date(expirationDate).toISOString();
     // Generate a random couponCode using uuid
     const code = uuidv4().slice(0, 6).toUpperCase(); // Take the first 6 characters of the generated UUID
 
@@ -51,7 +52,7 @@ const createCupon = async (req, res) => {
         code,
         name,
         description,
-        expirationDate,
+        expirationDate: parsedExpirationDate,
         isValid,
       },
     });

@@ -2,9 +2,9 @@
 import Header from "@/components/Header.astro";
 import UsersCuponsTable from "@/components/tables/UsersCuponsTable.astro";
 import Layout from "@/components/Layout.astro";
-import { getCombinedData } from "@/js/handlers/handlerUsersCupons.js";
+import { getUsersCupons } from "@/js/handlers/handlerUsersCupons.js";
 
-const usersCupons = await getCombinedData();
+const usersCupons = await getUsersCupons();
 ---
 
 <Layout title={"User-Cupons"} description={"Cupones-Usuarios"}>

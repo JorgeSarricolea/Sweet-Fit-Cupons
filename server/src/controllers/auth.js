@@ -108,8 +108,7 @@ const registerWithEmailOnly = async (req, res) => {
     // Use Prisma to create a new users_cupons in the database
     const newUserWithoutCode = await prisma.users_cupons.create({
       data: {
-        userId: newUser.id,
-        cuponId: null,
+        email: newUser.email,
         userCuponCode: null,
       },
     });

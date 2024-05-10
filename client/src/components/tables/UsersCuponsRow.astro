@@ -1,7 +1,10 @@
 ---
 import Button from "@/components/buttons/Button.astro";
-const { email, cuponCode, expirationDate, aplicatedDate } = Astro.props;
+const { email, cuponCode, expirationDate, applicationDate, id } = Astro.props;
 const expirationDateFormatted = new Date(expirationDate).toLocaleDateString(
+  "es-ES"
+);
+const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
   "es-ES"
 );
 ---
@@ -10,10 +13,10 @@ const expirationDateFormatted = new Date(expirationDate).toLocaleDateString(
   <td>{email || "N/A"}</td>
   <td>{cuponCode || "N/A"}</td>
   <td>{expirationDate ? expirationDateFormatted : "N/A"}</td>
-  <td>{aplicatedDate || "N/A"}</td>
+  <td>{applicationDate ? applicationDateFormatted : "N/A"}</td>
   <td class="">
     {
-      aplicatedDate ? (
+      applicationDate ? (
         "Cupón validado"
       ) : cuponCode ? (
         <Button description={["Validar cupón"]} importance={["secondary"]} />
@@ -24,7 +27,31 @@ const expirationDateFormatted = new Date(expirationDate).toLocaleDateString(
   </td>
   <td>
     <i
+      id="deleteIcon"
       class="fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
-    ></i>
+      data-userCuponId={id}></i>
   </td>
 </tr>
+
+<script>
+  import { deleteUsersCupon } from "@/js/handlers/handlerUsersCupons.js";
+
+  // Esperar a que el documento esté completamente cargado
+  document.addEventListener("DOMContentLoaded", function () {
+    const deleteIcon = document.getElementById("deleteIcon");
+
+    // Verificar si el icono de borrado existe
+    if (deleteIcon) {
+      deleteIcon.addEventListener("click", function () {
+        const userCuponId = deleteIcon.getAttribute("data-userCuponId");
+
+        // Verificar si userId y cuponId existen
+        if (userCuponId) {
+          deleteUsersCupon(userCuponId);
+        } else {
+          console.log("Failed to delete");
+        }
+      });
+    }
+  });
+</script>

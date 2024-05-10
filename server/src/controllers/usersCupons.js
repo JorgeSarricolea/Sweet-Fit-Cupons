@@ -2,45 +2,37 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 // Get all coupon assignments to users
-const getAllUserCuponAssignments = async (req, res) => {
+const getAllUserCupons = async (req, res) => {
   try {
     // Find all coupon assignments to users
-    const userCuponAssignments = await prisma.users_cupons.findMany();
+    const userCupons = await prisma.users_cupons.findMany();
 
-    console.log("\nList of user-cupon assignments:\n", userCuponAssignments);
-    res.json(userCuponAssignments);
+    console.log("\nList of users-cupons:\n", userCupons);
+    res.json(userCupons);
   } catch (error) {
-    console.error("Error fetching user-cupon assignments:", error);
+    console.error("Error fetching users-cupons:", error);
     res.status(500).json({ error: "Error fetching user-cupon assignments" });
   }
 };
 
 // Get a coupon assignment to user by their IDs
-const getUserCuponAssignmentByIds = async (req, res) => {
-  const { userId, cuponId } = req.params;
+const getUserCuponById = async (req, res) => {
+  const { userCuponId } = req.params;
 
   try {
     // Find a coupon assignment to user by their IDs
-    const userCuponAssignment = await prisma.users_cupons.findUnique({
+    const userCupon = await prisma.users_cupons.findUnique({
       where: {
-        userId_cuponId: { userId, cuponId },
+        id: userCuponId,
       },
     });
 
-    if (!userCuponAssignment) {
-      return res.status(404).json({ error: "User-cupon assignment not found" });
+    if (!userCupon) {
+      return res.status(404).json({ error: "User-cupon not found" });
     }
 
-    console.log(
-      "\nUser with ID '" +
-        userId +
-        "' assigned cupon with ID '" +
-        cuponId +
-        "' successfully!"
-    );
-
-    console.log("User ID: ", userId, "\nCupon ID", cuponId);
-    res.json(userCuponAssignment);
+    console.log("\nuser-cupon with ID: ", userCuponId, userCupon);
+    res.json(userCupon);
   } catch (error) {
     console.error("Error fetching user-cupon assignment:", error);
     res.status(500).json({ error: "Error fetching user-cupon assignment" });
@@ -49,49 +41,60 @@ const getUserCuponAssignmentByIds = async (req, res) => {
 
 // Assign a coupon to a user
 const assignCuponToUser = async (req, res) => {
-  const { userId, cuponId } = req.body;
+  const { userEmail, cuponCode } = req.body;
 
   try {
-    // Check if the user and coupon exist
-    const userExists = await prisma.users.findUnique({
+    // Check if the user exists
+    const user = await prisma.users.findUnique({
       where: {
-        id: userId,
+        email: userEmail,
       },
     });
 
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find all the user's cupons
+    const userCupons = await prisma.users_cupons.findMany({
+      where: {
+        email: userEmail,
+      },
+    });
+
+    // Check if any of the user's cupons already have the same cuponCode
+    const isDuplicateCupon = userCupons.some(
+      (cupon) => cupon.userCuponCode === cuponCode
+    );
+
+    if (isDuplicateCupon) {
+      return res
+        .status(400)
+        .json({ error: "User already has the same coupon assigned" });
+    }
+
+    // Find the cupon by its code
     const cupon = await prisma.cupons.findUnique({
       where: {
-        id: cuponId,
+        code: cuponCode,
       },
     });
 
-    if (!userExists || !cupon) {
-      return res.status(404).json({ error: "User or cupon not found" });
+    if (!cupon) {
+      return res.status(404).json({ error: "Cupon not found" });
     }
 
     // Associate the coupon to the user
     const userCupon = await prisma.users_cupons.create({
       data: {
-        userId,
-        cuponId,
-        userCuponCode: cupon.code, // Assign the coupon code to the userCuponCode attribute
-      },
-    });
-
-    // Update the user's couponCode with the coupon code
-    await prisma.users.update({
-      where: { id: userId },
-      data: {
-        cuponCode: cupon.code,
+        email: userEmail,
+        userCuponCode: cuponCode,
+        cuponExpirationDate: cupon.expirationDate,
       },
     });
 
     console.log(
-      "\nUser with ID '" +
-        userId +
-        "' assigned cupon with ID '" +
-        cuponId +
-        "' successfully!"
+      `\nUser with email '${userEmail}' assigned cupon with code '${cuponCode}' successfully!`
     );
     res.json(userCupon);
   } catch (error) {
@@ -100,15 +103,15 @@ const assignCuponToUser = async (req, res) => {
   }
 };
 
-// Update coupon availability for a user
-const updateUserCuponAvailability = async (req, res) => {
-  const { userId, cuponId, isAvailable } = req.body;
+// Update user cupon availability
+const updateUserCupon = async (req, res) => {
+  const { userCuponId } = req.params;
 
   try {
-    // Check if the user-coupon association exists
+    // Check if the user-cupon association exists
     const userCupon = await prisma.users_cupons.findUnique({
       where: {
-        userId_cuponId: { userId, cuponId },
+        id: userCuponId,
       },
     });
 
@@ -118,23 +121,20 @@ const updateUserCuponAvailability = async (req, res) => {
         .json({ error: "User-cupon association not found" });
     }
 
-    // Update coupon availability for the user
+    // Get the current date and time
+    const now = new Date();
+
+    // Update the application date
     const updatedUserCupon = await prisma.users_cupons.update({
       where: {
-        userId_cuponId: { userId, cuponId },
+        id: userCuponId,
       },
       data: {
-        isAvailable,
+        applicationDate: now,
       },
     });
 
-    console.log(
-      "\nUser with ID '" +
-        userId +
-        "' cupon with ID '" +
-        cuponId +
-        "' updated successfully!"
-    );
+    console.log("User cupon availability updated successfully!");
     res.json(updatedUserCupon);
   } catch (error) {
     console.error("Error updating user cupon availability:", error);
@@ -143,14 +143,14 @@ const updateUserCuponAvailability = async (req, res) => {
 };
 
 // Delete a coupon assignment to user
-const deleteUserCuponAssignment = async (req, res) => {
-  const { userId, cuponId } = req.params;
+const deleteUserCupon = async (req, res) => {
+  const { userCuponId } = req.params;
 
   try {
     // Check if the assignment exists
     const userCuponExists = await prisma.users_cupons.findUnique({
       where: {
-        userId_cuponId: { userId, cuponId },
+        id: userCuponId,
       },
     });
 
@@ -161,7 +161,7 @@ const deleteUserCuponAssignment = async (req, res) => {
     // Delete coupon assignment to user
     await prisma.users_cupons.delete({
       where: {
-        userId_cuponId: { userId, cuponId },
+        id: userCuponId,
       },
     });
 
@@ -174,9 +174,9 @@ const deleteUserCuponAssignment = async (req, res) => {
 };
 
 module.exports = {
-  getAllUserCuponAssignments,
-  getUserCuponAssignmentByIds,
+  getAllUserCupons,
+  getUserCuponById,
   assignCuponToUser,
-  updateUserCuponAvailability,
-  deleteUserCuponAssignment,
+  updateUserCupon,
+  deleteUserCupon,
 };

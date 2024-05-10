@@ -16,7 +16,7 @@ model users {
   email String @unique @db.VarChar(255)
   password String @db.VarChar(255)
   cuponCode String? @db.VarChar(6)
-  registrationDate DateTime @default(now()) 
+  registrationDate DateTime @default(now())
   userCupons users_cupons[]
 }
 
@@ -28,7 +28,7 @@ model roles {
 
 model cupons {
   id String @id @default(uuid()) @db.VarChar(36)
-  code String @db.VarChar(6)
+  code String @unique @db.VarChar(6)
   name String @db.VarChar(150)
   description String @db.VarChar(255)
   expirationDate DateTime
@@ -37,13 +37,12 @@ model cupons {
 }
 
 model users_cupons {
-  userId String @db.VarChar(36)
-  user users @relation(fields: [userId], references: [id])
-  cuponId String? @db.VarChar(36)
-  cupon cupons? @relation(fields: [cuponId], references: [id])
-  isAvailable Boolean @default(false)
+  id String @id @default(uuid()) @db.VarChar(36)
+  email String @db.VarChar(255)
+  user users @relation(fields: [email], references: [email])
   userCuponCode String? @db.VarChar(6)
-  sentCuponDate DateTime?
-
-  @@id([userId])
+  cupon cupons? @relation(fields: [userCuponCode], references: [code])
+  cuponExpirationDate DateTime?
+  applicationDate DateTime?
 }
+

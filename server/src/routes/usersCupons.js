@@ -5,19 +5,16 @@ const router = express.Router();
 const usersCuponsController = require("../controllers/usersCupons");
 
 // Routes
-router.get("/users-cupons", usersCuponsController.getAllUserCuponAssignments);
+router.get("/users-cupons", usersCuponsController.getAllUserCupons);
 router.get(
-  "/users-cupons/:userId/:cuponId",
-  usersCuponsController.updateUserCuponAvailability
+  "/users-cupons/:userCuponId",
+  usersCuponsController.getUserCuponById
 );
 router.post("/users-cupons", usersCuponsController.assignCuponToUser);
-router.put(
-  "/users-cupons/:userId/:cuponId",
-  usersCuponsController.updateUserCuponAvailability
-);
+router.put("/users-cupons/:userCuponId", usersCuponsController.updateUserCupon);
 router.delete(
-  "/users-cupons/:userId/:cuponId",
-  usersCuponsController.deleteUserCuponAssignment
+  "/users-cupons/:userCuponId",
+  usersCuponsController.deleteUserCupon
 );
 
 module.exports = router;
