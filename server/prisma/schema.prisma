@@ -41,5 +41,6 @@ model users_coupons {
   userCouponCode String? @db.VarChar(6)
   couponExpirationDate DateTime?
   applicationDate DateTime?
+  isSent Boolean @default(false)
 }
 

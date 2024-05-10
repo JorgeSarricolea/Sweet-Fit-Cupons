@@ -39,67 +39,11 @@ const getUserCouponById = async (req, res) => {
   }
 };
 
-const assignCouponToUser = async (req, res) => {
-  const { id } = req.params;
-  const { userCouponCode } = req.body;
-
-  try {
-    // Buscar la asociación usuario-cupón
-    const userCoupon = await prisma.users_coupons.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!userCoupon) {
-      return res
-        .status(404)
-        .json({ error: "user-coupon association not found" });
-    }
-
-    const existingCoupon = await prisma.coupons.findUnique({
-      where: {
-        code: userCouponCode,
-      },
-    });
-
-    if (!existingCoupon) {
-      return res
-        .status(400)
-        .json({ error: "El código del cupón proporcionado no es válido" });
-    }
-
-    const currentDate = new Date();
-    if (existingCoupon.expirationDate < currentDate) {
-      return res
-        .status(400)
-        .json({ error: "El cupón ha expirado y ya no es válido" });
-    }
-
-    const updatedUserCoupon = await prisma.users_coupons.update({
-      where: {
-        id: id,
-      },
-      data: {
-        userCouponCode,
-        couponExpirationDate: existingCoupon.expirationDate,
-      },
-    });
-
-    console.log("Cupón asignado al usuario exitosamente!");
-    res.json(updatedUserCoupon);
-  } catch (error) {
-    console.error("Error al actualizar el cupón del usuario:", error);
-    res.status(500).json({ error: "Error al actualizar el cupón del usuario" });
-  }
-};
-
-// Update user cupon availability
 const updateUserCoupon = async (req, res) => {
   const { id } = req.params;
+  const { userCouponCode, applicationDate } = req.body;
 
   try {
-    // Check if the user-cupon association exists
     const userCoupon = await prisma.users_coupons.findUnique({
       where: {
         id: id,
@@ -112,24 +56,57 @@ const updateUserCoupon = async (req, res) => {
         .json({ error: "user-coupon association not found" });
     }
 
-    // Get the current date and time
-    const now = new Date();
+    if (!userCoupon.isSent) {
+      const existingCoupon = await prisma.coupons.findUnique({
+        where: {
+          code: userCouponCode,
+        },
+      });
 
-    // Update the application date
-    const updatedUserCoupon = await prisma.users_coupons.update({
-      where: {
-        id: id,
-      },
-      data: {
-        applicationDate: now,
-      },
-    });
+      if (!existingCoupon) {
+        return res
+          .status(400)
+          .json({ error: "El código del cupón proporcionado no es válido" });
+      }
 
-    console.log("user-coupon availability updated successfully!");
-    res.json(updatedUserCoupon);
+      const currentDate = new Date();
+      if (existingCoupon.expirationDate < currentDate) {
+        return res
+          .status(400)
+          .json({ error: "El cupón ha expirado y ya no es válido" });
+      }
+
+      const updatedUserCoupon = await prisma.users_coupons.update({
+        where: {
+          id: id,
+        },
+        data: {
+          userCouponCode,
+          couponExpirationDate: existingCoupon.expirationDate,
+          isSent: true,
+        },
+      });
+
+      console.log("Cupón asignado al usuario exitosamente!");
+      return res.json(updatedUserCoupon);
+    } else {
+      const updatedUserCoupon = await prisma.users_coupons.update({
+        where: {
+          id: id,
+        },
+        data: {
+          applicationDate,
+        },
+      });
+
+      console.log("user-coupon availability updated successfully!");
+      return res.json(updatedUserCoupon);
+    }
   } catch (error) {
-    console.error("Error updating user-coupon availability:", error);
-    res.status(500).json({ error: "Error updating user coupon availability" });
+    console.error("Error updating user-coupon:", error);
+    return res
+      .status(500)
+      .json({ error: "Error updating user coupon availability" });
   }
 };
 
@@ -169,7 +146,6 @@ const deleteUserCoupon = async (req, res) => {
 module.exports = {
   getAllUserCoupons,
   getUserCouponById,
-  assignCouponToUser,
   updateUserCoupon,
   deleteUserCoupon,
 };

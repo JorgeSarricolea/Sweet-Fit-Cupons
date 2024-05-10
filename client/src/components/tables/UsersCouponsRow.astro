@@ -20,10 +20,15 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
       applicationDate ? (
         "Cupón validado"
       ) : couponCode ? (
-        <Button description="Validar cupón" importance="secondary" />
+        <Button
+          className={"update-user-coupon-btn"}
+          params={userCouponId}
+          description="Validar cupón"
+          importance="secondary"
+        />
       ) : (
         <Button
-          className={"send-coupon-btn"}
+          className={"update-user-coupon-btn"}
           params={userCouponId}
           description="Enviar cupón"
           importance="primary"
@@ -43,12 +48,14 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 <script>
   import {
     deleteUsersCoupon,
-    sendCoupon,
+    updateUserCoupon,
   } from "@/js/handlers/handlerUsersCoupons.js";
 
   document.addEventListener("DOMContentLoaded", function () {
     const deleteIcons = document.querySelectorAll(".delete-user-coupon-btn");
-    const sendButtons = document.querySelectorAll(".send-coupon-btn");
+    const updateUserCouponBtns = document.querySelectorAll(
+      ".update-user-coupon-btn"
+    );
 
     deleteIcons.forEach((deleteIcon) => {
       deleteIcon.addEventListener("click", async function () {
@@ -66,13 +73,13 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
       });
     });
 
-    sendButtons.forEach((sendButton) => {
-      sendButton.addEventListener("click", async function () {
-        const userCouponId = sendButton.getAttribute("data-params");
+    updateUserCouponBtns.forEach((updateUserCouponBtn) => {
+      updateUserCouponBtn.addEventListener("click", async function () {
+        const userCouponId = updateUserCouponBtn.getAttribute("data-params");
 
         if (userCouponId) {
           try {
-            await sendCoupon(userCouponId);
+            await updateUserCoupon(userCouponId);
             location.reload();
           } catch (error) {
             console.log("Failed to send coupon:", error);

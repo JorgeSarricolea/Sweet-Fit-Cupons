@@ -15,16 +15,17 @@ export async function getUsersCoupons() {
   }
 }
 
-// Send coupon to user
-export const sendCoupon = async (userCouponId) => {
+// Update user-coupon
+export const updateUserCoupon = async (userCouponId) => {
   try {
     const coupons = await getCoupons();
 
     if (coupons.length === 0) {
-      throw new Error("No hay coupones disponibles");
+      throw new Error("No hay cupones disponibles");
     }
 
     const userCouponCode = coupons[0].code;
+    const applicationDate = new Date().toISOString();
 
     const response = await fetch(
       `${API_URL}/api/users-coupons/${userCouponId}`,
@@ -33,7 +34,7 @@ export const sendCoupon = async (userCouponId) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userCouponCode }),
+        body: JSON.stringify({ userCouponCode, applicationDate }),
       }
     );
 
