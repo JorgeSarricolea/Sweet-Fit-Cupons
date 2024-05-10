@@ -14,19 +14,31 @@ export async function getUsersCupons() {
   }
 }
 
+// Delete a user-coupon by its ID
 export const deleteUsersCupon = async (userCuponId) => {
   try {
-    const response = await fetch(`${API_URL}/users-cupons/${userCuponId}`, {
+    const url = `${API_URL}/api/users-cupons/${userCuponId}`;
+    const response = await fetch(url, {
       method: "DELETE",
     });
 
-    if (response.ok) {
-      // Eliminar la fila de la tabla en la interfaz de usuario
-      deleteRow(userCuponId);
-    } else {
-      throw new Error("Error al eliminar la fila");
+    if (!response.ok) {
+      throw new Error(
+        `Failed to delete user-cupon association. Status: ${response.status}. URL: ${url}`
+      );
     }
+    deleteRow(userCuponId);
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error deleting user-cupon association:", error);
   }
 };
+
+// Define a function to delete the row by its ID
+function deleteRow(userCuponId) {
+  const row = document.getElementById(userCuponId);
+  if (row) {
+    row.remove();
+  } else {
+    console.error("Row with ID", userCuponId, "not found");
+  }
+}

@@ -1,6 +1,7 @@
 ---
 import Button from "@/components/buttons/Button.astro";
-const { email, cuponCode, expirationDate, applicationDate, id } = Astro.props;
+const { email, cuponCode, expirationDate, applicationDate, userCuponId } =
+  Astro.props;
 const expirationDateFormatted = new Date(expirationDate).toLocaleDateString(
   "es-ES"
 );
@@ -9,7 +10,7 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 );
 ---
 
-<tr class="text-center">
+<tr class="text-center" id={userCuponId}>
   <td>{email || "N/A"}</td>
   <td>{cuponCode || "N/A"}</td>
   <td>{expirationDate ? expirationDateFormatted : "N/A"}</td>
@@ -27,31 +28,33 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
   </td>
   <td>
     <i
-      id="deleteIcon"
-      class="fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
-      data-userCuponId={id}></i>
+      class="deleteIcon fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
+      data-userCuponId={userCuponId}
+    >
+    </i>
   </td>
 </tr>
 
 <script>
   import { deleteUsersCupon } from "@/js/handlers/handlerUsersCupons.js";
 
-  // Esperar a que el documento esté completamente cargado
   document.addEventListener("DOMContentLoaded", function () {
-    const deleteIcon = document.getElementById("deleteIcon");
+    const deleteIcons = document.querySelectorAll(".deleteIcon");
 
-    // Verificar si el icono de borrado existe
-    if (deleteIcon) {
-      deleteIcon.addEventListener("click", function () {
+    deleteIcons.forEach((deleteIcon) => {
+      deleteIcon.addEventListener("click", async function () {
         const userCuponId = deleteIcon.getAttribute("data-userCuponId");
 
-        // Verificar si userId y cuponId existen
         if (userCuponId) {
-          deleteUsersCupon(userCuponId);
+          try {
+            await deleteUsersCupon(userCuponId);
+          } catch (error) {
+            console.log("Failed to delete user-cupon association:", error);
+          }
         } else {
-          console.log("Failed to delete");
+          console.log("Failed to delete: userCuponId is undefined");
         }
       });
-    }
+    });
   });
 </script>
