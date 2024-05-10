@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const sendMail = require("../handlers/handlerNodemailer");
+
 // Get all coupon assignments to users
 const getAllUserCoupons = async (req, res) => {
   try {
@@ -87,6 +89,18 @@ const updateUserCoupon = async (req, res) => {
         },
       });
 
+      userEmail = userCoupon.email;
+      subject = "¡Sweet Fit te envía un cupón!";
+      body = `
+        <h1>¡Te agradecemos por dejar una buena reseña con nosotros!</h1>
+
+        <p>${existingCoupon.description}</p>
+        <p>Tu nuevo código es: <h1>${userCouponCode}</h1></p>
+        <p>Tu cupón tiene fecha de vencimiento: ${existingCoupon.expirationDate.toLocaleDateString('es-MX')}</p>
+
+      `;
+
+      sendMail(userEmail, subject, body);
       console.log("Cupón asignado al usuario exitosamente!");
       return res.json(updatedUserCoupon);
     } else {
