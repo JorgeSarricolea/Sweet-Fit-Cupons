@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migrate": "prisma migrate deploy --preview-feature",
-    "start": "NODE_ENV=production node src/index.js",
+    "start": "npm run migrate && NODE_ENV=production node src/index.js",
+    "migrate": "prisma migrate deploy --preview-feature && npm install",
     "dev": "NODE_ENV=development nodemon src/index.js"
   },
   "keywords": [],
