@@ -1,5 +1,5 @@
 ---
-import UsersCuponsRow from "@/components/tables/UsersCuponsRow.astro";
+import UsersCouponsRow from "@/components/tables/UsersCouponsRow.astro";
 const { tableData } = Astro.props;
 ---
 
@@ -16,12 +16,12 @@ const { tableData } = Astro.props;
   <tbody>
     {
       tableData.map((data) => (
-        <UsersCuponsRow
+        <UsersCouponsRow
           email={data.email}
-          cuponCode={data.userCuponCode}
-          expirationDate={data.cuponExpirationDate}
+          couponCode={data.userCouponCode}
+          expirationDate={data.couponExpirationDate}
           applicationDate={data.applicationDate}
-          userCuponId={data.id}
+          userCouponId={data.id}
         />
       ))
     }

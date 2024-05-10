@@ -55,7 +55,7 @@ const verifyToken = async (req, res) => {
 
 // Register a new user with a default roleId as 'User'
 const register = async (req, res) => {
-  const { firstName, lastName, email, password, cuponCode } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     // Find the roleId for 'User'
@@ -72,7 +72,6 @@ const register = async (req, res) => {
         email,
         password: hashedPassword,
         role: { connect: { id: userRoleId } },
-        cuponCode,
       },
     });
 
@@ -117,7 +116,7 @@ const registerWithEmailOnly = async (req, res) => {
       },
     });
 
-    const newUserWithoutCode = await prisma.users_cupons.create({
+    const newUserWithoutCode = await prisma.users_coupons.create({
       data: {
         email: newUser.email,
       },

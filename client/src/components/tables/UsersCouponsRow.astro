@@ -1,6 +1,6 @@
 ---
 import Button from "@/components/buttons/Button.astro";
-const { email, cuponCode, expirationDate, applicationDate, userCuponId } =
+const { email, couponCode, expirationDate, applicationDate, userCouponId } =
   Astro.props;
 const expirationDateFormatted = new Date(expirationDate).toLocaleDateString(
   "es-ES"
@@ -10,21 +10,21 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 );
 ---
 
-<tr class="text-center" id={userCuponId}>
+<tr class="text-center" id={userCouponId}>
   <td>{email || "N/A"}</td>
-  <td>{cuponCode || "N/A"}</td>
+  <td>{couponCode || "N/A"}</td>
   <td>{expirationDate ? expirationDateFormatted : "N/A"}</td>
   <td>{applicationDate ? applicationDateFormatted : "N/A"}</td>
   <td class="">
     {
       applicationDate ? (
         "Cupón validado"
-      ) : cuponCode ? (
+      ) : couponCode ? (
         <Button description="Validar cupón" importance="secondary" />
       ) : (
         <Button
           className={"send-coupon-btn"}
-          params={userCuponId}
+          params={userCouponId}
           description="Enviar cupón"
           importance="primary"
         />
@@ -34,7 +34,7 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
   <td>
     <i
       class="delete-user-coupon-btn fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
-      data-userCuponId={userCuponId}
+      data-userCouponId={userCouponId}
     >
     </i>
   </td>
@@ -42,9 +42,9 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 
 <script>
   import {
-    deleteUsersCupon,
+    deleteUsersCoupon,
     sendCoupon,
-  } from "@/js/handlers/handlerUsersCupons.js";
+  } from "@/js/handlers/handlerUsersCoupons.js";
 
   document.addEventListener("DOMContentLoaded", function () {
     const deleteIcons = document.querySelectorAll(".delete-user-coupon-btn");
@@ -52,33 +52,33 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 
     deleteIcons.forEach((deleteIcon) => {
       deleteIcon.addEventListener("click", async function () {
-        const userCuponId = deleteIcon.getAttribute("data-userCuponId");
+        const userCouponId = deleteIcon.getAttribute("data-userCouponId");
 
-        if (userCuponId) {
+        if (userCouponId) {
           try {
-            await deleteUsersCupon(userCuponId);
+            await deleteUsersCoupon(userCouponId);
           } catch (error) {
-            console.log("Failed to delete user-cupon association:", error);
+            console.log("Failed to delete user-coupon association:", error);
           }
         } else {
-          console.log("Failed to delete: userCuponId is undefined");
+          console.log("Failed to delete: userCouponId is undefined");
         }
       });
     });
 
     sendButtons.forEach((sendButton) => {
       sendButton.addEventListener("click", async function () {
-        const userCuponId = sendButton.getAttribute("data-params");
+        const userCouponId = sendButton.getAttribute("data-params");
 
-        if (userCuponId) {
+        if (userCouponId) {
           try {
-            await sendCoupon(userCuponId);
+            await sendCoupon(userCouponId);
             location.reload();
           } catch (error) {
             console.log("Failed to send coupon:", error);
           }
         } else {
-          console.log("Failed to send: userCuponId is undefined");
+          console.log("Failed to send: userCouponId is undefined");
         }
       });
     });

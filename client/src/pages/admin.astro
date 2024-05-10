@@ -1,13 +1,13 @@
 ---
 import Header from "@/components/Header.astro";
-import UsersCuponsTable from "@/components/tables/UsersCuponsTable.astro";
+import UsersCouponsTable from "@/components/tables/UsersCouponsTable.astro";
 import Layout from "@/components/Layout.astro";
-import { getUsersCupons } from "@/js/handlers/handlerUsersCupons.js";
+import { getUsersCoupons } from "@/js/handlers/handlerUsersCoupons.js";
 
-const usersCupons = await getUsersCupons();
+const usersCoupons = await getUsersCoupons();
 ---
 
-<Layout title={"User-Cupons"} description={"Cupones-Usuarios"}>
+<Layout title={"Cupones"} description={"Cupones"}>
   <Header />
   <div class="flex flex-col h-screen justify-center items-center border p-16">
     <div class="flex flex-row justify-between w-full px-16 py-1">
@@ -26,7 +26,7 @@ const usersCupons = await getUsersCupons();
       </form>
     </div>
     <div class="h-full w-full overflow-y-auto rounded-lg shadow-2xl p-5">
-      <UsersCuponsTable tableData={usersCupons} />
+      <UsersCouponsTable tableData={usersCoupons} />
     </div>
   </div>
 </Layout>

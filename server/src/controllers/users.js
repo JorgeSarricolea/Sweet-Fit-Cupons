@@ -39,7 +39,7 @@ const getUserById = async (req, res) => {
 // Update an existing user
 const updateUser = async (req, res) => {
   const userId = req.params.id;
-  const { firstName, lastName, email, password, roleId, cuponCode } = req.body;
+  const { firstName, lastName, email, password, roleId } = req.body;
 
   try {
     const updatedUser = await prisma.users.update({
@@ -50,7 +50,6 @@ const updateUser = async (req, res) => {
         email,
         password,
         roleId,
-        cuponCode,
       },
     });
 
