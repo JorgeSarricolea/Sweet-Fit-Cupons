@@ -3,27 +3,29 @@ import UsersCouponsRow from "@/components/tables/UsersCouponsRow.astro";
 const { tableData } = Astro.props;
 ---
 
-<table class="w-full justify-beetwen">
-  <thead class="text-center">
-    <tr>
-      <th>Email</th>
-      <th>Cupón</th>
-      <th>Fecha de vencimiento</th>
-      <th>Fecha de aplicación</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {
-      tableData.map((data) => (
-        <UsersCouponsRow
-          email={data.email}
-          couponCode={data.userCouponCode}
-          expirationDate={data.couponExpirationDate}
-          applicationDate={data.applicationDate}
-          userCouponId={data.id}
-        />
-      ))
-    }
-  </tbody>
-</table>
+<div class="h-full w-full rounded-4xl shadow-2xl p-4 overflow-x-auto">
+  <table class="text-center w-full text-primary">
+    <thead class="border-solid border-b-4">
+      <tr class="text-xs md:text-lg">
+        <th>Email</th>
+        <th>Cupón</th>
+        <th>Fecha de vencimiento</th>
+        <th>Fecha de aplicación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        tableData.map((data) => (
+          <UsersCouponsRow
+            email={data.email}
+            couponCode={data.userCouponCode}
+            expirationDate={data.couponExpirationDate}
+            applicationDate={data.applicationDate}
+            userCouponId={data.id}
+          />
+        ))
+      }
+    </tbody>
+  </table>
+</div>
