@@ -84,7 +84,7 @@ const usersCoupons = await getUsersCoupons();
         if (userCouponId) {
           try {
             await deleteUsersCoupon(userCouponId);
-            location.reload();
+            // location.reload();
           } catch (error) {
             console.log("Failed to delete user-coupon association:", error);
           }
@@ -101,7 +101,7 @@ const usersCoupons = await getUsersCoupons();
         if (userCouponId) {
           try {
             await updateUserCoupon(userCouponId);
-            location.reload();
+            // location.reload();
           } catch (error) {
             console.log("Failed to send coupon:", error);
           }
