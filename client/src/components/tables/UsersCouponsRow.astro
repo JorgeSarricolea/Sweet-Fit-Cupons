@@ -64,6 +64,7 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
         if (userCouponId) {
           try {
             await deleteUsersCoupon(userCouponId);
+            location.reload();
           } catch (error) {
             console.log("Failed to delete user-coupon association:", error);
           }

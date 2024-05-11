@@ -62,18 +62,7 @@ export const deleteUsersCoupon = async (userCouponId) => {
         `Failed to delete user-coupon association. Status: ${response.status}. URL: ${url}`
       );
     }
-    deleteRow(userCouponId);
   } catch (error) {
     console.error("Error deleting user-coupon association:", error);
   }
 };
-
-// Define a function to delete the row by its ID
-function deleteRow(userCouponId) {
-  const row = document.getElementById(userCouponId);
-  if (row) {
-    row.remove();
-  } else {
-    console.error("Row with ID", userCouponId, "not found");
-  }
-}
