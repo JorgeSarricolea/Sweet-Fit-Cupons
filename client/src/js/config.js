@@ -1,3 +1,3 @@
-const API_URL = "https://sweet-fit-coupons.onrender.com";
+const API_URL = "http://localhost:3000";
 
 export { API_URL };

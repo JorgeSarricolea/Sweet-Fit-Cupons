@@ -1,3 +1,3 @@
-const clientUrl = "https://sweet-fit-coupons.netlify.app";
+const clientUrl = "http://localhost:4321";
 
 module.exports = { clientUrl };

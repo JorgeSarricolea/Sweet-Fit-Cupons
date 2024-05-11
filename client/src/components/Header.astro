@@ -2,11 +2,16 @@
 import Button from "@/components/buttons/Button.astro";
 ---
 
-<header>
-  <Button
-    id="close-session-btn"
-    description="Cerrar sesión"
-    importance="main"
-    action="logout"
-  />
+<header class="flex bg-primary h-16">
+  <div class="flex flex-row justify-between items-center m-auto w-10/12">
+    <h1 class="uppercase text-white font-bold text-2xl">Sweet Fit Admin</h1>
+    <div>
+      <Button
+        id="close-session-btn"
+        description="Cerrar sesión"
+        importance="secondary"
+        action="logout"
+      />
+    </div>
+  </div>
 </header>
