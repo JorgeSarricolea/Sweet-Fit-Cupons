@@ -27,7 +27,7 @@ export const updateUserCoupon = async (userCouponId) => {
     }
 
     const userCouponCode = coupons[0].code;
-    const applicationDate = new Date().toISOString();
+    const applicationDate = new Date();
 
     const response = await fetch(
       `${API_URL}/api/users-coupons/${userCouponId}`,
