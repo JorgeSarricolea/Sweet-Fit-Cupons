@@ -1,6 +1,8 @@
 ---
-import UsersCouponsRow from "@/components/tables/UsersCouponsRow.astro";
-const { tableData } = Astro.props;
+import { getUsersCoupons } from "@/js/handlers/handlerUsersCoupons.js";
+import Button from "@/components/buttons/Button.astro";
+
+const usersCoupons = await getUsersCoupons();
 ---
 
 <div class="h-full w-full rounded-4xl shadow-2xl p-4 overflow-x-auto">
@@ -16,16 +18,97 @@ const { tableData } = Astro.props;
     </thead>
     <tbody>
       {
-        tableData.map((data) => (
-          <UsersCouponsRow
-            email={data.email}
-            couponCode={data.userCouponCode}
-            expirationDate={data.couponExpirationDate}
-            applicationDate={data.applicationDate}
-            userCouponId={data.id}
-          />
+        usersCoupons.map((userCoupon) => (
+          <tr
+            class="text-xs md:text-lg border-solid border-b-2"
+            id={userCoupon.id}
+          >
+            <td class="p-2">{userCoupon.email || "N/A"}</td>
+            <td class="p-2">{userCoupon.userCouponCode || "N/A"}</td>
+            <td class="p-2">
+              {userCoupon.couponExpirationDate
+                ? userCoupon.couponExpirationDate
+                : "N/A"}
+            </td>
+            <td class="p-2">
+              {userCoupon.applicationDate ? userCoupon.applicationDate : "N/A"}
+            </td>
+            <td class="p-2 font-bold">
+              {userCoupon.applicationDate ? (
+                "Cupón validado"
+              ) : userCoupon.userCouponCode ? (
+                <Button
+                  className={"update-user-coupon-btn"}
+                  params={userCoupon.id}
+                  description="Validar cupón"
+                  importance="secondary"
+                />
+              ) : (
+                <Button
+                  className={"update-user-coupon-btn"}
+                  params={userCoupon.id}
+                  description="Enviar cupón"
+                  importance="primary"
+                />
+              )}
+            </td>
+            <td>
+              <i
+                class="delete-user-coupon-btn p-2 fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
+                data-userCouponId={userCoupon.id}
+              />
+            </td>
+          </tr>
         ))
       }
     </tbody>
   </table>
 </div>
+
+<script>
+  import {
+    deleteUsersCoupon,
+    updateUserCoupon,
+  } from "@/js/handlers/handlerUsersCoupons.js";
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const deleteIcons = document.querySelectorAll(".delete-user-coupon-btn");
+    const updateUserCouponBtns = document.querySelectorAll(
+      ".update-user-coupon-btn"
+    );
+
+    deleteIcons.forEach((deleteIcon) => {
+      deleteIcon.addEventListener("click", async function () {
+        const userCouponId = deleteIcon.getAttribute("data-userCouponId");
+
+        if (userCouponId) {
+          try {
+            await deleteUsersCoupon(userCouponId);
+            location.reload();
+          } catch (error) {
+            console.log("Failed to delete user-coupon association:", error);
+          }
+        } else {
+          console.log("Failed to delete: userCouponId is undefined");
+        }
+      });
+    });
+
+    updateUserCouponBtns.forEach((updateUserCouponBtn) => {
+      updateUserCouponBtn.addEventListener("click", async function () {
+        const userCouponId = updateUserCouponBtn.getAttribute("data-params");
+
+        if (userCouponId) {
+          try {
+            await updateUserCoupon(userCouponId);
+            location.reload();
+          } catch (error) {
+            console.log("Failed to send coupon:", error);
+          }
+        } else {
+          console.log("Failed to send: userCouponId is undefined");
+        }
+      });
+    });
+  });
+</script>
