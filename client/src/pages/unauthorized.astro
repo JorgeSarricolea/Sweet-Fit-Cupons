@@ -1,0 +1,20 @@
+---
+import Layout from "@/components/Layout.astro";
+import Button from "@/components/buttons/Button.astro";
+---
+
+<Layout title={["Unauthorized"]} description={["Unauthorized page"]}>
+  <div
+    class="min-h-screen flex items-center justify-center bg-gray-100 px-8 md:px-0"
+  >
+    <div class="max-w-md w-full bg-white shadow-lg rounded-lg p-8">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        No tienes permisos para entrar en esta página
+      </h2>
+      <p class="text-gray-600 mb-4">
+        Por favor, contacta al administrador del sitio para obtener acceso.
+      </p>
+      <Button description="Regresar" action="redirectToHome" />
+    </div>
+  </div>
+</Layout>
