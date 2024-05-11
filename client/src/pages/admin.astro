@@ -27,6 +27,9 @@ const usersCoupons = await getUsersCoupons();
         />
       </form>
     </div>
+    <UsersCouponsTable tableData={usersCoupons} />
+    {
+      /*
     {
       usersCoupons.length === 0 && (
         <p class="uppercase text-lg text-primary font-bold text-center">
@@ -47,6 +50,8 @@ const usersCoupons = await getUsersCoupons();
           )}
         </>
       )
+    }
+    */
     }
   </div>
 

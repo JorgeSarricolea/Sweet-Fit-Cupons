@@ -8,7 +8,9 @@ export async function getUsersCoupons() {
     if (!response.ok) {
       throw new Error("Failed to get users-coupons");
     }
-    return await response.json();
+    const data = await response.json();
+    console.log(data);
+    return data;
   } catch (error) {
     console.error(error);
     return [];
