@@ -37,8 +37,6 @@ if (!token) {
       window.location.href = "/login";
     } else {
       const { roleId, roleName } = result;
-      console.log("User's roleId:", roleId);
-      console.log("User's roleName:", roleName);
 
       // Perform validation with the user' roleName
       if (roleName != "Admin") {
