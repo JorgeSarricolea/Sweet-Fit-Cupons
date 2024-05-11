@@ -10,12 +10,12 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 );
 ---
 
-<tr class="text-center" id={userCouponId}>
-  <td>{email || "N/A"}</td>
-  <td>{couponCode || "N/A"}</td>
-  <td>{expirationDate ? expirationDateFormatted : "N/A"}</td>
-  <td>{applicationDate ? applicationDateFormatted : "N/A"}</td>
-  <td class="">
+<tr class="text-xs md:text-lg border-solid border-b-2" id={userCouponId}>
+  <td class="p-2">{email || "N/A"}</td>
+  <td class="p-2">{couponCode || "N/A"}</td>
+  <td class="p-2">{expirationDate ? expirationDateFormatted : "N/A"}</td>
+  <td class="p-2">{applicationDate ? applicationDateFormatted : "N/A"}</td>
+  <td class="p-2 font-bold">
     {
       applicationDate ? (
         "Cupón validado"
@@ -38,7 +38,7 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
   </td>
   <td>
     <i
-      class="delete-user-coupon-btn fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
+      class="delete-user-coupon-btn p-2 fa-solid fa-trash text-primary text-2xl cursor-pointer hover:text-secondary"
       data-userCouponId={userCouponId}
     >
     </i>

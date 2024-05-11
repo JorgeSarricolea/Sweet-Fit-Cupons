@@ -27,10 +27,8 @@ const usersCoupons = await getUsersCoupons();
         />
       </form>
     </div>
-    <div class="h-full w-full overflow-y-auto rounded-lg shadow-2xl p-4">
-      <UsersCouponsTable tableData={usersCoupons} />
-    </div>
+    <UsersCouponsTable tableData={usersCoupons} />
   </div>
-</Layout>
 
-<script src="../js/auth.js"></script>
+  <script src="../js/auth.js"></script>
+</Layout>
