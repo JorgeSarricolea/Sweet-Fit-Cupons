@@ -47,9 +47,13 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 
 <script>
   import {
+    getUsersCoupons,
     deleteUsersCoupon,
     updateUserCoupon,
   } from "@/js/handlers/handlerUsersCoupons.js";
+
+  // testing in prod
+  await getUsersCoupons();
 
   document.addEventListener("DOMContentLoaded", function () {
     const deleteIcons = document.querySelectorAll(".delete-user-coupon-btn");
@@ -63,8 +67,12 @@ const applicationDateFormatted = new Date(applicationDate).toLocaleDateString(
 
         if (userCouponId) {
           try {
+            const rowToDelete = document.getElementById(userCouponId);
+            if (rowToDelete) {
+              rowToDelete.remove();
+            }
+
             await deleteUsersCoupon(userCouponId);
-            location.reload();
           } catch (error) {
             console.log("Failed to delete user-coupon association:", error);
           }
