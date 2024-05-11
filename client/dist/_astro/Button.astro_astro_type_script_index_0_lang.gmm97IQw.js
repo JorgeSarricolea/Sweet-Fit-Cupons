@@ -1,1 +1,0 @@
-const e={logout:function(){localStorage.removeItem("token"),window.location.href="/login"},test:function(){console.log("Test function called")}},c=o=>{const t=o.target.dataset.action;t&&e[t]&&e[t]()};document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".button").forEach(n=>{n.addEventListener("click",c)})});
