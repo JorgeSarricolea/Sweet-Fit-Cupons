@@ -6,7 +6,7 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
 <Layout title={["Registrate"]} description={["Registro Cliente"]}>
   <div class="flex h-screen justify-center items-center">
     <div
-      class="flex w-5/6 m-auto bg-primary shadow-2xl justify-center items-center rounded-2xl"
+      class="md:flex w-5/6 m-auto bg-primary shadow-2xl justify-center items-center rounded-2xl"
     >
       <div
         class="w-full basis-2/3 p-0 md:h-full md:basis-1/2 justify-self-left bg-white rounded-b-lg md:rounded-none md:rounded-l-lg"
@@ -14,8 +14,10 @@ import PrimaryInput from "@/components/inputs/PrimaryInput.astro";
         <div
           class="p-10 md:mt-36 w-full h-full flex flex-col justify-around space-y-10"
         >
-          <div class="flex align-center pb-10 flex-col border">
-            <p class="font-bold text-6xl text-primary">Recibe un cupón</p>
+          <div class="flex align-center pb-10 flex-col">
+            <h1 class="font-bold text-4xl md:text-6xl text-primary">
+              Recibe un cupón
+            </h1>
             <br />
             <p>Sigue los pasos para recibir un cupón:</p>
             <ol>
