@@ -1,3 +1,3 @@
-const clientUrl = "https://sweet-fit-coupons.netlify.app";
+const clientUrl = "https://sweetfit.netlify.app";
 
 module.exports = { clientUrl };
