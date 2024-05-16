@@ -2,6 +2,9 @@
 import Header from "@/components/Header.astro";
 import UsersCouponsTable from "@/components/tables/UsersCouponsTable.astro";
 import Layout from "@/components/Layout.astro";
+import { getUsersCoupons } from "@/js/handlers/handlerUsersCoupons";
+
+const usersCoupons = await getUsersCoupons();
 ---
 
 <Layout title={"Cupones"} description={"Cupones"}>
@@ -24,10 +27,7 @@ import Layout from "@/components/Layout.astro";
         />
       </form>
     </div>
-    <UsersCouponsTable />
     {
-      /*
-      {
       usersCoupons.length === 0 && (
         <p class="uppercase text-lg text-primary font-bold text-center">
           No hay usuarios con cupones solicitados
@@ -48,9 +48,6 @@ import Layout from "@/components/Layout.astro";
         </>
       )
     }
-  */
-    }
   </div>
-
   <script src="../js/auth.js"></script>
 </Layout>
