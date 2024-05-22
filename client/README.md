@@ -59,7 +59,7 @@ pnpm run dev
 
 # Description of Folders and Files
 
-1. **`components/`**
+### **`components/`**
 This folder contains all reusable components divided by their responsibility. This allows for better organization and code reuse.
 
 - **`buttons/`** Components related to buttons.
@@ -68,10 +68,10 @@ This folder contains all reusable components divided by their responsibility. Th
 - **`tables/`** Components related to tables.
 - **`/`** Other general components that do not fit into the above categories.
 
-2. **`pages/`**
+### **`pages/`**
 Contains the main pages of the application. Each file in this folder represents a complete page.
 
-3. **`js/`**
+### **`js/`**
 This folder contains JavaScript files related to the application's logic and its interaction with the back-end.
 
 - **`config.js`** Main configuration file, where the API URL is defined.
