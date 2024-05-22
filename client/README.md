@@ -10,8 +10,7 @@ This documentation provides an overview of the front-end application built with 
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Description of Folders and Files](description-of-folders-and-files)
-  - [Features](#features)
+  - [Description of Folders and Files](#description-of-folders-and-files)
  
 # Introduction
 
@@ -60,7 +59,7 @@ pnpm run dev
 
 # Description of Folders and Files
 
-1. **components/**
+1. **`components/`**
 This folder contains all reusable components divided by their responsibility. This allows for better organization and code reuse.
 
 - **`buttons/`** Components related to buttons.
@@ -69,10 +68,10 @@ This folder contains all reusable components divided by their responsibility. Th
 - **`tables/`** Components related to tables.
 - **`/`** Other general components that do not fit into the above categories.
 
-2. **pages/**
+2. **`pages/`**
 Contains the main pages of the application. Each file in this folder represents a complete page.
 
-3. **js/**
+3. **`js/`**
 This folder contains JavaScript files related to the application's logic and its interaction with the back-end.
 
 - **`config.js`** Main configuration file, where the API URL is defined.
