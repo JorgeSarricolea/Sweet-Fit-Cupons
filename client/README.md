@@ -66,7 +66,7 @@ This folder contains all reusable components divided by their responsibility. Th
 - **`buttons/`** Components related to buttons.
 - **`inputs/`** Components related to data input.
 - **`popups/`** Components for pop-up windows.
-- **`tables/` **Components related to tables.
+- **`tables/`** Components related to tables.
 - **`/`** Other general components that do not fit into the above categories.
 
 2. **pages/**
