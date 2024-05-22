@@ -80,7 +80,7 @@ The entry point of the application. This file initializes the server, connects t
 
 # Migrations
 
-To perform migrations automatically, you can take a look at the script located within the **scripts** folder: [auto_migrate.sh](../scripts/auto_migrate.sh)
+To perform migrations automatically, you can take a look at the script located within the **scripts** folder: [auto_migrate.sh](scripts/auto_migrate.sh)
 
 > [!TIP]
 > Just run this script following the next command:
