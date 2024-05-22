@@ -63,11 +63,11 @@ pnpm run dev
 1. **components/**
 This folder contains all reusable components divided by their responsibility. This allows for better organization and code reuse.
 
-**`buttons/`** Components related to buttons.
-**`inputs/`** Components related to data input.
-**`popups/`** Components for pop-up windows.
-**`tables/` **Components related to tables.
-**`/`** Other general components that do not fit into the above categories.
+- **`buttons/`** Components related to buttons.
+- **`inputs/`** Components related to data input.
+- **`popups/`** Components for pop-up windows.
+- **`tables/` **Components related to tables.
+- **`/`** Other general components that do not fit into the above categories.
 
 2. **pages/**
 Contains the main pages of the application. Each file in this folder represents a complete page.
@@ -75,7 +75,7 @@ Contains the main pages of the application. Each file in this folder represents 
 3. **js/**
 This folder contains JavaScript files related to the application's logic and its interaction with the back-end.
 
-**`config.js`** Main configuration file, where the API URL is defined.
-**`handlers/`** Folder containing specific functions that interact with the back-end.
-**`objects/`** Folder containing objects used in the application.
-**`auth.js`** File where user authorization with the back-end occurs.
+- **`config.js`** Main configuration file, where the API URL is defined.
+- **`handlers/`** Folder containing specific functions that interact with the back-end.
+- **`objects/`** Folder containing objects used in the application.
+- **`auth.js`** File where user authorization with the back-end occurs.
